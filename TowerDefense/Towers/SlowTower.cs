@@ -8,12 +8,18 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense.Towers
 {
-    public class CannonTower : Tower {
+    public class SlowTower : Tower {
+        // Defines how fast an enemy will move when hit.
+        private float speedModifier;
+        // Defines how long this effect will last.
+        private float modifierDuration;
 
-        public CannonTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position){
+        public SlowTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position)  {
             this.damage = 15; // Set the damage
             this.cost = 15;   // Set the initial cost
             this.radius = 80; // Set the radius
+            this.speedModifier = 0.6f;
+            this.modifierDuration = 2.0f;
         }
 
         public override void Update(GameTime gameTime) {
@@ -30,6 +36,12 @@ namespace TowerDefense.Towers
                 if (!IsInRange(bullet.Center))
                     bullet.Kill();
                 if (target != null && Vector2.Distance(bullet.Center, target.Center) < 12) {
+                    // Apply our speed modifier if it is better than
+                    // the one currently affecting the target :
+                    if (target.SpeedModifier <= speedModifier)  {
+                        target.SpeedModifier = speedModifier;
+                        target.ModifierDuration = modifierDuration;
+                    }
                     target.CurrentHealth -= bullet.Damage;
                     bullet.Kill();
                 }

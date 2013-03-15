@@ -27,6 +27,8 @@ namespace TowerDefense.GUI
        private ButtonStatus state = ButtonStatus.Normal;
        // Gets fired when the button is pressed.
        public event EventHandler Clicked;
+       // Gets fired when the button is held down.
+       public event EventHandler OnPress;
 
        public Button(Texture2D texture, Texture2D hoverTexture, Texture2D pressedTexture, Vector2 position) : base(texture, position) {
            this.hoverTexture = hoverTexture;
@@ -49,6 +51,10 @@ namespace TowerDefense.GUI
                if (isMouseOver == true) {
                    // Update the button state.
                    state = ButtonStatus.Pressed;
+                   if (OnPress != null) {
+                       // Fire the OnPress event.
+                       OnPress(this, EventArgs.Empty);
+                   }
                }
            }
            // Check if the player releases the button.

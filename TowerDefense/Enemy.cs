@@ -11,11 +11,27 @@ namespace TowerDefense
     public class Enemy : Sprite {
         protected float startHealth;
         protected float currentHealth;
+        public float HealthPercentage {
+            get { return currentHealth / startHealth; }
+        }
         protected bool alive = true;
         protected float speed = 0.5f;
         protected int bountyGiven;
         private Queue<Vector2> waypoints = new Queue<Vector2>();
-
+        private float speedModifier;
+        private float modifierDuration;
+        private float modiferCurrentTime;
+        public float SpeedModifier {
+            get { return speedModifier; }
+            set { speedModifier = value; }
+        }
+        public float ModifierDuration {
+            get { return modifierDuration; }
+            set   {
+                modifierDuration = value;
+                modiferCurrentTime = 0;
+            }
+        }
         public float DistanceToDestination  {
             get { return Vector2.Distance(position, waypoints.Peek()); }
         }
@@ -54,7 +70,21 @@ namespace TowerDefense
                 else   {
                     Vector2 direction = waypoints.Peek() - position;
                     direction.Normalize();
-                    velocity = Vector2.Multiply(direction, speed);
+                    // Store the original speed.
+                    float temporarySpeed = speed;
+                    // If the modifier has finished,
+                    if (modiferCurrentTime > modifierDuration)  {
+                        // reset the modifier.
+                        speedModifier = 0;
+                        modiferCurrentTime = 0;
+                    }
+                    if (speedModifier != 0 && modiferCurrentTime <= modifierDuration)  {
+                        // Modify the speed of the enemy.
+                        temporarySpeed *= speedModifier;
+                        // Update the modifier timer.
+                        modiferCurrentTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    }
+                    velocity = Vector2.Multiply(direction, temporarySpeed);
                     position += velocity;
                 }
             }
@@ -67,9 +97,7 @@ namespace TowerDefense
 
         public override void Draw(SpriteBatch spriteBatch) {
             if (alive) {
-                float healthPercentage = (float)currentHealth / (float)startHealth;
-                Color color = new Color(new Vector3(1 - healthPercentage, 1 - healthPercentage, 1 - healthPercentage));
-                base.Draw(spriteBatch, color);
+                base.Draw(spriteBatch);
             }
         }
 

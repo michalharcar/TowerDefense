@@ -18,12 +18,17 @@ namespace TowerDefense
         private Level level; // A reference of the level
         private Texture2D enemyTexture; // A texture for the enemies
         public List<Enemy> enemies = new List<Enemy>(); // List of enemies
+        private Player player; // A reference to the player.
+        private Texture2D healthTexture; // A texture for the health bar.
 
-        public Wave(int waveNumber, int numOfEnemies, Level level, Texture2D enemyTexture) {
+        public Wave(int waveNumber, int numOfEnemies, Player player, Level level, Texture2D enemyTexture, Texture2D healthTexture)
+        {
             this.waveNumber = waveNumber;
             this.numOfEnemies = numOfEnemies;
+            this.player = player;
             this.level = level;
             this.enemyTexture = enemyTexture;
+            this.healthTexture = healthTexture;
         }
 
         private void AddEnemy() {
@@ -51,8 +56,13 @@ namespace TowerDefense
                 Enemy enemy = enemies[i];
                 enemy.Update(gameTime);
                 if (enemy.IsDead) {
-                    if (enemy.CurrentHealth > 0) {        // Enemy is at the end  
+                    if (enemy.CurrentHealth > 0)
+                    {        // Enemy is at the end  
                         enemyAtEnd = true;
+                        player.Lives--;
+                    }
+                    else {
+                        player.Money += enemy.BountyGiven;
                     }
                     enemies.Remove(enemy);
                     i--;
@@ -61,8 +71,26 @@ namespace TowerDefense
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            foreach (Enemy enemy in enemies)
+            foreach (Enemy enemy in enemies) {
                 enemy.Draw(spriteBatch);
+                Rectangle healthRectangle = new Rectangle((int)enemy.Position.X,
+                                             (int)enemy.Position.Y,
+                                             healthTexture.Width,
+                                             healthTexture.Height);
+                spriteBatch.Draw(healthTexture, healthRectangle, Color.Gray);
+                float healthPercentage = enemy.HealthPercentage;
+                float visibleWidth = (float)healthTexture.Width * healthPercentage;
+
+                healthRectangle = new Rectangle((int)enemy.Position.X,
+                                               (int)enemy.Position.Y,
+                                               (int)(visibleWidth),
+                                               healthTexture.Height);
+
+                float red = (healthPercentage < 0.5 ? 1 : 1 - (2 * healthPercentage - 1));
+                float green = (healthPercentage > 0.5 ? 1 : (2 * healthPercentage));
+                Color healthColor = new Color(red, green, 0);
+                spriteBatch.Draw(healthTexture, healthRectangle, healthColor);
+            }
         }
 
         public bool RoundOver {

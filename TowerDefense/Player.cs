@@ -15,8 +15,10 @@ namespace TowerDefense
         private int cellY;
         private int tileX;
         private int tileY;
-        private int money = 100;
-        private int lives = 10;
+        public int Money {
+            get; set; }
+        public int Lives {
+        get; set; }
         private List<Tower> towers = new List<Tower>();
         private MouseState mouseState; // Mouse state for the current frame
         private MouseState oldState; // Mouse state for the previous frame
@@ -28,19 +30,15 @@ namespace TowerDefense
         public string NewTowerType {
             set { newTowerType = value; }
         }
-
-        public int Money {
-            get { return money; }
-        }
-        public int Lives {
-            get { return lives; }
-        }
-
+        // The index of the new towers texture.
+        public int NewTowerIndex { get; set; }
         public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures)
         {
             this.level = level;
             this.towerTextures = towerTextures;
             this.bulletTextures = bulletTextures;
+            Money = 100;
+            Lives = 10;
         }
 
         public void Update(GameTime gameTime, List<Enemy> enemies)  {
@@ -95,14 +93,36 @@ namespace TowerDefense
                             bulletTextures[1], new Vector2(tileX, tileY));
                         break;
                     }
+                case "Slow Tower":
+                    {
+                        towerToAdd = new SlowTower(towerTextures[2],
+                            bulletTextures[2], new Vector2(tileX, tileY));
+                        break;
+                    }
 
             }
             // Only add the tower if there is a space and if the player can afford it.
-            if (IsCellClear() == true && towerToAdd.Cost <= money) {
+            if (IsCellClear() == true && towerToAdd.Cost <= Money) {
                 towers.Add(towerToAdd);
-                money -= towerToAdd.Cost;
+                Money -= towerToAdd.Cost;
                 // Reset the newTowerType field.
                 newTowerType = string.Empty;
+            }
+            else {
+                newTowerType = string.Empty;
+            }
+        }
+
+        public void DrawPreview(SpriteBatch spriteBatch) {
+            // Draw the tower preview.
+            if (string.IsNullOrEmpty(newTowerType) == false) {
+                int cellX = (int)(mouseState.X / 32); // Convert the position of the mouse
+                int cellY = (int)(mouseState.Y / 32); // from array space to level space
+                int tileX = cellX * 32; // Convert from array space to level space
+                int tileY = cellY * 32; // Convert from array space to level space
+                Texture2D previewTexture = towerTextures[NewTowerIndex];
+                spriteBatch.Draw(previewTexture, new Rectangle(tileX, tileY, previewTexture.Width, previewTexture.Height), Color.White);
+
             }
         }
 

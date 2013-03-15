@@ -24,6 +24,7 @@ namespace TowerDefense
         Toolbar toolBar;
         Button cannonButton;
         Button spikeButton;
+        Button slowButton;
 
         public Game1()
             : base()
@@ -61,14 +62,15 @@ namespace TowerDefense
             Texture2D grass = Content.Load<Texture2D>("grass");
             Texture2D path = Content.Load<Texture2D>("path");
             Texture2D enemyTexture = Content.Load<Texture2D>("enemy");
-            waveManager = new WaveManager(level, 24, enemyTexture);
             Texture2D[] towerTextures = new Texture2D[] {
               Content.Load<Texture2D>("cannonTower"),
-              Content.Load<Texture2D>("spikeTower")
+              Content.Load<Texture2D>("spikeTower"),
+              Content.Load<Texture2D>("slowTower")
             };
             Texture2D[] bulletTextures = new Texture2D[] { 
               Content.Load<Texture2D>("bullet"),
-              Content.Load<Texture2D>("spike")
+              Content.Load<Texture2D>("spike"),
+              Content.Load<Texture2D>("sbullet")
             };
             Texture2D topBar = Content.Load<Texture2D>("toolbar");
             SpriteFont font = Content.Load<SpriteFont>("font");
@@ -90,8 +92,24 @@ namespace TowerDefense
             Texture2D spikePressed = Content.Load<Texture2D>("interface\\spike_button3");
             spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.RowCount * 32));
             spikeButton.Clicked += new EventHandler(spikeButton_Clicked);
+
+            // The "Normal" texture for the spike button.
+            Texture2D slowNormal = Content.Load<Texture2D>("interface\\slow_button1");
+            // The "MouseOver" texture for the spike button.
+            Texture2D slowHover = Content.Load<Texture2D>("interface\\slow_button2");
+            // The "Pressed" texture for the spike button.
+            Texture2D slowPressed = Content.Load<Texture2D>("interface\\slow_button3");
+            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.RowCount * 32));
+            slowButton.Clicked += new EventHandler(slowButton_Clicked);
+
+            cannonButton.OnPress += new EventHandler(cannonButton_OnPress);
+            spikeButton.OnPress += new EventHandler(spikeButton_OnPress);
+            slowButton.OnPress += new EventHandler(slowButton_OnPress);
+
             toolBar = new Toolbar(topBar, font, new Vector2(0, level.RowCount * 32));
+            Texture2D healthTexture = Content.Load<Texture2D>("healthbar");
             player = new Player(level, towerTextures, bulletTextures);
+            waveManager = new WaveManager(player, level, 24, enemyTexture, healthTexture);
             level.AddTexture(grass);
             level.AddTexture(path);
 
@@ -117,6 +135,7 @@ namespace TowerDefense
             player.Update(gameTime, waveManager.Enemies);
             cannonButton.Update(gameTime);
             spikeButton.Update(gameTime);
+            slowButton.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -134,16 +153,39 @@ namespace TowerDefense
             toolBar.Draw(spriteBatch, player);
             cannonButton.Draw(spriteBatch);
             spikeButton.Draw(spriteBatch);
+            slowButton.Draw(spriteBatch);
+            player.DrawPreview(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }
 
         private void cannonButton_Clicked(object sender, EventArgs e) {
             player.NewTowerType = "Cannon Tower";
+            player.NewTowerIndex = 0;
         }
 
         private void spikeButton_Clicked(object sender, EventArgs e) {
             player.NewTowerType = "Spike Tower";
+            player.NewTowerIndex = 1;
         }
+
+        private void slowButton_Clicked(object sender, EventArgs e) {
+            player.NewTowerType = "Slow Tower";
+            player.NewTowerIndex = 2;
+        }
+
+        private void cannonButton_OnPress(object sender, EventArgs e) {
+            player.NewTowerType = "Cannon Tower";
+            player.NewTowerIndex = 0;
+        }
+        private void spikeButton_OnPress(object sender, EventArgs e) {
+            player.NewTowerType = "Spike Tower";
+            player.NewTowerIndex = 1;
+        }
+        private void slowButton_OnPress(object sender, EventArgs e) {
+            player.NewTowerType = "Slow Tower";
+            player.NewTowerIndex = 2;
+        }
+
     }
 }

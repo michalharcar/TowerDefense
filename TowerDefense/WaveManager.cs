@@ -26,7 +26,8 @@ namespace TowerDefense
             get { return CurrentWave.RoundNumber + 1; }
         }
 
-        public WaveManager(Level level, int numberOfWaves, Texture2D enemyTexture) {
+        public WaveManager(Player player, Level level, int numberOfWaves, Texture2D enemyTexture, Texture2D healthTexture)
+        {
             this.numberOfWaves = numberOfWaves;
             this.enemyTexture = enemyTexture;
             this.level = level;
@@ -34,7 +35,7 @@ namespace TowerDefense
                 int initialNumerOfEnemies = 6;
                 int numberModifier = (i / 6) + 1;
                 Wave wave = new Wave(i, initialNumerOfEnemies *
-                    numberModifier, level, enemyTexture);
+                    numberModifier, player, level, enemyTexture, healthTexture);
                 waves.Enqueue(wave);
             }
             StartNextWave();
