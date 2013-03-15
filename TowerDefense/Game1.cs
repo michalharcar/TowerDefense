@@ -31,7 +31,7 @@ namespace TowerDefense
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.PreferredBackBufferWidth = level.ColCount * 32;
+            graphics.PreferredBackBufferWidth = level.Width * 32;
             graphics.PreferredBackBufferHeight = level.RowCount * 32 + 32;
             graphics.ApplyChanges();
             IsMouseVisible = true;

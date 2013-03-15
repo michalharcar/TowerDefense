@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,23 +13,51 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TowerDefense
 {
     public class Level {
-        int[,] map = new int[,]{
-         {0,1,0,0,0,0,0,0,0},
-         {0,1,0,0,0,0,0,0,0},
-         {0,1,1,1,1,1,1,0,0},
-         {0,0,0,0,0,0,1,0,0},
-         {0,0,0,0,0,0,1,0,0},
-         {0,0,0,0,1,1,1,0,0},
-         {0,0,0,0,1,0,0,0,0},
-         {0,0,0,0,1,0,0,0,0},
-         };
+
+        public static int[,] loadLevel() {
+            using (StreamReader sr = new StreamReader("Content\\level.txt")) {
+                int linesCount = 0;
+                string line;
+                int lineLength = 0;
+                while ((line = sr.ReadLine()) != null) {
+                    linesCount++;
+                    lineLength = line.Length;
+                }
+                int[,] mapa = new int[linesCount, lineLength / 2+1];
+                sr.BaseStream.Seek(0, SeekOrigin.Begin);
+                int x = 0;
+                string row;
+                while ((row = sr.ReadLine()) != null) {
+                    int i = 0;
+                    int y = 0;
+                    while (i < row.Length) {
+                        mapa[x, y] = row.ToCharArray()[i]-48;
+                        i += 2;
+                        y++;
+                    }
+                    x++;
+                }
+                return mapa;
+            }       
+        }
+        int[,] map = loadLevel();
+        //int[,] map = new int[,] {
+        // {0,1,0,0,0,0,0,0,0},
+        // {0,1,0,0,0,0,0,0,0},
+        // {0,1,1,1,1,1,1,0,0},
+        // {0,0,0,0,0,0,1,0,0},
+        // {0,0,0,0,0,0,1,0,0},
+        // {0,0,0,0,1,1,1,0,0},
+        // {0,0,0,0,1,0,0,0,0},
+        // {0,0,0,0,1,0,0,0,0},
+        // };
         private List<Texture2D> tileTextures = new List<Texture2D>();
         private Queue<Vector2> waypoints = new Queue<Vector2>();
         public Queue<Vector2> Waypoints {
             get { return waypoints; }
         }
 
-        public int ColCount {
+        public int Width {
             get { return map.GetLength(1); }
         }
         public int RowCount {
@@ -59,7 +88,7 @@ namespace TowerDefense
 
         public void Draw(SpriteBatch batch)
         {
-            for (int col = 0; col < ColCount; col++) {
+            for (int col = 0; col < Width; col++) {
                 for (int row = 0; row < RowCount; row++) {
                     int textureIndex = map[row, col];
                     if (textureIndex == -1)
@@ -71,7 +100,7 @@ namespace TowerDefense
         }
 
         public int GetIndex(int cellX, int cellY) {
-            if (cellX < 0 || cellX > ColCount -1 || cellY < 0 || cellY > RowCount -1)
+            if (cellX < 0 || cellX > Width -1 || cellY < 0 || cellY > RowCount -1)
                 return 0;
             else return map[cellY, cellX];
 

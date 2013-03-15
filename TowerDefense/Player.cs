@@ -69,7 +69,7 @@ namespace TowerDefense
         }
 
         private bool IsCellClear()  {
-            bool inBounds = cellX >= 0 && cellY >= 0 && cellX < level.ColCount && cellY < level.RowCount; // Make sure tower is within limits              
+            bool inBounds = cellX >= 0 && cellY >= 0 && cellX < level.Width && cellY < level.RowCount; // Make sure tower is within limits              
             bool spaceClear = true;
             foreach (Tower tower in towers)  { // Check that there is no tower here
                 spaceClear = (tower.Position != new Vector2(tileX, tileY));
