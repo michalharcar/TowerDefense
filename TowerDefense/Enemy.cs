@@ -6,8 +6,15 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TowerDefense
-{
+namespace TowerDefense {
+
+    public enum Direction {
+        NORTH,
+        SOUTH,
+        WEST, 
+        EAST
+    }
+
     public class Enemy : Sprite {
         protected float startHealth;
         protected float currentHealth;
@@ -17,6 +24,7 @@ namespace TowerDefense
         protected bool alive = true;
         protected float speed = 0.5f;
         protected int bountyGiven;
+        protected Direction EnemyDirection { get;  set; }
         private Queue<Vector2> waypoints = new Queue<Vector2>();
         private float speedModifier;
         private float modifierDuration;
@@ -46,11 +54,18 @@ namespace TowerDefense
             get { return bountyGiven; }
         }
 
+        //Animated enemy
+        private Texture2D texture;
+        float timer = 0f;
+        float interval = 200f;
+        int currentFrame = 0;
+
         public Enemy(Texture2D texture, Vector2 position, float health, int bountyGiven, float speed) : base(texture, position){
             this.startHealth = health;
             this.currentHealth = startHealth;
             this.bountyGiven = bountyGiven;
             this.speed = speed;
+            this.texture = texture;
         }
 
         public void SetWaypoints(Queue<Vector2> waypoints) {
@@ -69,6 +84,22 @@ namespace TowerDefense
                 }
                 else   {
                     Vector2 direction = waypoints.Peek() - position;
+                    if(direction.X > 0) {
+                        EnemyDirection = Direction.EAST;
+                        MoveRight(gameTime);
+                    }
+                    if(direction.X < 0) {
+                        EnemyDirection = Direction.WEST;
+                        MoveLeft(gameTime);
+                    }
+                    if(direction.Y > 0) {
+                        EnemyDirection = Direction.SOUTH;
+                        MoveDown(gameTime);
+                    }
+                    if(direction.Y < 0) {
+                        EnemyDirection = Direction.NORTH;
+                        MoveUp(gameTime);
+                    }
                     direction.Normalize();
                     // Store the original speed.
                     float temporarySpeed = speed;
@@ -97,10 +128,56 @@ namespace TowerDefense
 
         public override void Draw(SpriteBatch spriteBatch) {
             if (alive) {
-                base.Draw(spriteBatch);
+               Rectangle rectangle = new Rectangle(32 * currentFrame, 0, 32, 32);
+                base.Draw(spriteBatch, rectangle);
+              //  base.Draw(spriteBatch);
             }
         }
 
+        public void MoveRight(GameTime gameTime){        
+	        if(currentFrame< 3 || currentFrame > 5)
+            currentFrame = 3;	    	 
+	        timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;	 
+	    if (timer > interval) {
+	        currentFrame++;         
+	        if (currentFrame > 5) 
+	            currentFrame = 3;        
+	        timer = 0f;
+	    }
+	}
+        public void MoveUp(GameTime gameTime) {
+            if(currentFrame < 0 || currentFrame > 2)
+            currentFrame = 0;
+            timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(timer > interval) {
+                currentFrame++;
+                if(currentFrame > 2)
+                    currentFrame = 0;
+                timer = 0f;
+            }
+        }
+        public void MoveDown(GameTime gameTime) {
+            if(currentFrame < 9 || currentFrame > 11)
+            currentFrame = 9;
+            timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(timer > interval) {
+                currentFrame++;
+                if(currentFrame > 11)
+                    currentFrame = 9;
+                timer = 0f;
+            }
+        }
+        public void MoveLeft(GameTime gameTime) {
+            if(currentFrame < 6 || currentFrame > 8)
+            currentFrame = 6;
+            timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(timer > interval) {
+                currentFrame++;
+                if(currentFrame > 8)
+                    currentFrame = 6;
+                timer = 0f;
+            }
+        }
 
     }
 }

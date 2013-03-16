@@ -61,7 +61,7 @@ namespace TowerDefense
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D grass = Content.Load<Texture2D>("grass");
             Texture2D path = Content.Load<Texture2D>("path");
-            Texture2D enemyTexture = Content.Load<Texture2D>("enemy");
+            Texture2D enemyTexture = Content.Load<Texture2D>("enemymove");
             Texture2D[] towerTextures = new Texture2D[] {
               Content.Load<Texture2D>("cannonTower"),
               Content.Load<Texture2D>("spikeTower"),
