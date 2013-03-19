@@ -82,38 +82,77 @@ namespace TowerDefense {
             }
         }
 
+        //public void makePath() {
+        //    int returnback = 0;
+        //    for(int x = 0; x < map.GetLength(1); x++) {
+        //        if(map[0, x] == 1)
+        //            waypoints.Enqueue(new Vector2(x, 0) * 32);
+        //    }
+        //    int row = 1;
+        //    while(row < map.GetLength(0)) {
+        //        int col = 0;
+        //        while(col < map.GetLength(1)) {
+        //            if(map[row, col] == 1) {
+        //                if(map[row - 1, col] == 1 || map[row, col - 1] == 1) {
+        //                    waypoints.Enqueue(new Vector2(col, row) * 32);
+        //                    if(returnback > 0) {
+        //                        for(int i = 1; i <= returnback; i++)
+        //                            waypoints.Enqueue(new Vector2(col - i, row) * 32);
+        //                        returnback = 0;
+        //                        col = map.GetLength(1);
+        //                    }
+        //                    else
+        //                        col++;
+        //                }
+        //                else {
+        //                    returnback++;
+        //                    col++;
+        //                }
+        //            }
+        //            else
+        //                col++;
+        //        }
+        //        row++;
+        //    }
+        //}
+
         public void makePath() {
-            int returnback = 0;
-            for(int x = 0; x < map.GetLength(1); x++) {
-                if(map[0, x] == 1)
-                    waypoints.Enqueue(new Vector2(x, 0) * 32);
+            Vector2 last=new Vector2();
+            for(int i = 0; i < map.GetLength(1); i++) {
+                if(map[0, i] == 1) {
+                    waypoints.Enqueue(new Vector2(i, 0) * 32);
+                    last = waypoints.ElementAt(waypoints.Count-1);
+                }
             }
-            int row = 1;
-            while(row < map.GetLength(0)) {
-                int col = 0;
-                while(col < map.GetLength(1)) {
-                    if(map[row, col] == 1) {
-                        if(map[row - 1, col] == 1 || map[row, col - 1] == 1) {
-                            waypoints.Enqueue(new Vector2(col, row) * 32);
-                            if(returnback > 0) {
-                                for(int i = 1; i <= returnback; i++)
-                                    waypoints.Enqueue(new Vector2(col - i, row) * 32);
-                                returnback = 0;
-                                col = map.GetLength(1);
-                            }
-                            else
-                                col++;
-                        }
-                        else {
-                            returnback++;
-                            col++;
+            for(int i = 0; i < map.GetLength(1); i++) {
+                if(map[1, i] == 1 && (map[0, i] == 1))
+                    waypoints.Enqueue(new Vector2(i, 1) * 32);
+            }
+            bool next = true;
+            int x = (int) waypoints.ElementAt(waypoints.Count - 1).X / 32;
+            int y = (int) waypoints.ElementAt(waypoints.Count - 1).Y / 32;
+            cycle:
+            while(next) {
+                for(int row = -1; row <= 1; row++) {
+                    next = false;
+                        for(int col = -1; col <= 1; col++) {
+                            int yPos = y + row;
+                            int xPos = x + col;
+                            if((row!=0 && col==0) || (row==0 && col!=0)){
+                                if(xPos > -1 && yPos > -1 && yPos < map.GetLength(0) && xPos < map.GetLength(1)) {
+                                    if(map[yPos, xPos] == 1 && (last.X / 32 != xPos || last.Y / 32 != yPos)) {
+                                        last = waypoints.ElementAt(waypoints.Count - 1);
+                                        waypoints.Enqueue(new Vector2(xPos, yPos) * 32);
+                                        x = (int) waypoints.ElementAt(waypoints.Count - 1).X / 32;
+                                        y = (int) waypoints.ElementAt(waypoints.Count - 1).Y / 32;
+                                        next = true;
+                                        goto cycle;
+                                    }
+                                }
                         }
                     }
-                    else
-                        col++;
                 }
-                row++;
-            }           
+            }
         }
     }
 }

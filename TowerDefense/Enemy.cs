@@ -55,7 +55,7 @@ namespace TowerDefense {
         }
 
         //Animated enemy
-        private Texture2D texture;
+        private new Texture2D texture;
         float timer = 0f;
         float interval = 200f;
         int currentFrame = 0;
