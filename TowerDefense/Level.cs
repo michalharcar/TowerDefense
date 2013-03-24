@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TowerDefense {
     public class Level {
         int[,] map;
+        public int[,] Map { get { return map; } }
         private List<Texture2D> tileTextures = new List<Texture2D>();
         private Queue<Vector2> waypoints = new Queue<Vector2>();
         public Queue<Vector2> Waypoints {
@@ -26,7 +27,7 @@ namespace TowerDefense {
         }
 
         public Level() {
-            map = loadLevel("level");
+            map = loadLevel("level3");
             makePath();
 
         }
@@ -81,40 +82,6 @@ namespace TowerDefense {
                 return mapa;
             }
         }
-
-        //public void makePath() {
-        //    int returnback = 0;
-        //    for(int x = 0; x < map.GetLength(1); x++) {
-        //        if(map[0, x] == 1)
-        //            waypoints.Enqueue(new Vector2(x, 0) * 32);
-        //    }
-        //    int row = 1;
-        //    while(row < map.GetLength(0)) {
-        //        int col = 0;
-        //        while(col < map.GetLength(1)) {
-        //            if(map[row, col] == 1) {
-        //                if(map[row - 1, col] == 1 || map[row, col - 1] == 1) {
-        //                    waypoints.Enqueue(new Vector2(col, row) * 32);
-        //                    if(returnback > 0) {
-        //                        for(int i = 1; i <= returnback; i++)
-        //                            waypoints.Enqueue(new Vector2(col - i, row) * 32);
-        //                        returnback = 0;
-        //                        col = map.GetLength(1);
-        //                    }
-        //                    else
-        //                        col++;
-        //                }
-        //                else {
-        //                    returnback++;
-        //                    col++;
-        //                }
-        //            }
-        //            else
-        //                col++;
-        //        }
-        //        row++;
-        //    }
-        //}
 
         public void makePath() {
             Vector2 last=new Vector2();

@@ -29,11 +29,13 @@ namespace TowerDefense.GUI
        public event EventHandler Clicked;
        // Gets fired when the button is held down.
        public event EventHandler OnPress;
+       private Player player;
 
-       public Button(Texture2D texture, Texture2D hoverTexture, Texture2D pressedTexture, Vector2 position) : base(texture, position) {
+       public Button(Texture2D texture, Texture2D hoverTexture, Texture2D pressedTexture, Vector2 position, Player player) : base(texture, position) {
            this.hoverTexture = hoverTexture;
            this.pressedTexture = pressedTexture;
            this.bounds = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+           this.player = player;
        }
 
        public override void Update(GameTime gameTime) {
@@ -67,7 +69,7 @@ namespace TowerDefense.GUI
                        Clicked(this, EventArgs.Empty);
                    }
                }
-               else if (state == ButtonStatus.Pressed) {
+               else if(state == ButtonStatus.Pressed) {
                    state = ButtonStatus.Normal;
                }
            }

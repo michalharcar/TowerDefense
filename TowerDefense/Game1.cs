@@ -32,7 +32,7 @@ namespace TowerDefense
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = level.Width * 32;
-            graphics.PreferredBackBufferHeight = level.RowCount * 32 + 32;
+            graphics.PreferredBackBufferHeight = level.RowCount * 32 + 64;
             graphics.ApplyChanges();
             IsMouseVisible = true;
 
@@ -72,42 +72,35 @@ namespace TowerDefense
               Content.Load<Texture2D>("spike"),
               Content.Load<Texture2D>("sbullet")
             };
-            Texture2D topBar = Content.Load<Texture2D>("toolbar");
+            Texture2D topBar = Content.Load<Texture2D>("interface\\toolbar");
+            Texture2D gold = Content.Load<Texture2D>("interface\\gold");
+            Texture2D life = Content.Load<Texture2D>("interface\\life");
             SpriteFont font = Content.Load<SpriteFont>("font");
+            Texture2D healthTexture = Content.Load<Texture2D>("healthbar");
 
             Texture2D cannonButtonNormal = Content.Load<Texture2D>("interface\\cannon_button1");
-            // The "MouseOver" texture for the arrow button.
             Texture2D cannonButtonHover = Content.Load<Texture2D>("interface\\cannon_button2");
-            // The "Pressed" texture for the arrow button.
             Texture2D cannonButtonPressed = Content.Load<Texture2D>("interface\\cannon_button3");
-            // Initialize the arrow button.
-            cannonButton = new Button(cannonButtonNormal, cannonButtonHover, cannonButtonPressed, new Vector2(0, level.RowCount * 32));
+            cannonButton = new Button(cannonButtonNormal, cannonButtonHover, cannonButtonPressed, new Vector2(0, level.RowCount * 32), player);
             cannonButton.Clicked += new EventHandler(cannonButton_Clicked);
             
-            // The "Normal" texture for the spike button.
             Texture2D spikeNormal = Content.Load<Texture2D>("interface\\spike_button1");
-            // The "MouseOver" texture for the spike button.
             Texture2D spikeHover = Content.Load<Texture2D>("interface\\spike_button2");
-            // The "Pressed" texture for the spike button.
             Texture2D spikePressed = Content.Load<Texture2D>("interface\\spike_button3");
-            spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.RowCount * 32));
+            spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.RowCount * 32), player);
             spikeButton.Clicked += new EventHandler(spikeButton_Clicked);
 
-            // The "Normal" texture for the spike button.
             Texture2D slowNormal = Content.Load<Texture2D>("interface\\slow_button1");
-            // The "MouseOver" texture for the spike button.
             Texture2D slowHover = Content.Load<Texture2D>("interface\\slow_button2");
-            // The "Pressed" texture for the spike button.
             Texture2D slowPressed = Content.Load<Texture2D>("interface\\slow_button3");
-            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.RowCount * 32));
+            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.RowCount * 32), player);
             slowButton.Clicked += new EventHandler(slowButton_Clicked);
-
+                    
             cannonButton.OnPress += new EventHandler(cannonButton_OnPress);
             spikeButton.OnPress += new EventHandler(spikeButton_OnPress);
             slowButton.OnPress += new EventHandler(slowButton_OnPress);
 
-            toolBar = new Toolbar(topBar, font, new Vector2(0, level.RowCount * 32));
-            Texture2D healthTexture = Content.Load<Texture2D>("healthbar");
+            toolBar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.RowCount * 32), level);       
             player = new Player(level, towerTextures, bulletTextures);
             waveManager = new WaveManager(player, level, 24, enemyTexture, healthTexture);
             level.AddTexture(grass);

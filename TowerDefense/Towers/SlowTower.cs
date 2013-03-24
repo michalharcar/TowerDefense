@@ -15,7 +15,7 @@ namespace TowerDefense.Towers
         private float modifierDuration;
 
         public SlowTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position)  {
-            this.damage = 15; // Set the damage
+            this.damage = 0; // Set the damage
             this.cost = 15;   // Set the initial cost
             this.radius = 80; // Set the radius
             this.speedModifier = 0.6f;

@@ -32,11 +32,16 @@ namespace TowerDefense
         }
         // The index of the new towers texture.
         public int NewTowerIndex { get; set; }
+        private Tower towerToAdd;
+        public Tower TowerToAdd { get { return towerToAdd; } }
+
+
         public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures)
         {
             this.level = level;
             this.towerTextures = towerTextures;
             this.bulletTextures = bulletTextures;
+            towerToAdd = null;
             Money = 100;
             Lives = 10;
         }
@@ -81,7 +86,7 @@ namespace TowerDefense
         }
 
         public void AddTower()  {
-            Tower towerToAdd = null;
+            
             switch (newTowerType)  {
                 case "Cannon Tower":  {
                         towerToAdd = new CannonTower(towerTextures[0],
@@ -103,10 +108,11 @@ namespace TowerDefense
             }
             // Only add the tower if there is a space and if the player can afford it.
             if (IsCellClear() == true && towerToAdd.Cost <= Money) {
-                towers.Add(towerToAdd);
+                towers.Add(towerToAdd);              
                 Money -= towerToAdd.Cost;
                 // Reset the newTowerType field.
                 newTowerType = string.Empty;
+                towerToAdd = null;
             }
             else {
                 newTowerType = string.Empty;
@@ -121,6 +127,7 @@ namespace TowerDefense
                 int tileX = cellX * 32; // Convert from array space to level space
                 int tileY = cellY * 32; // Convert from array space to level space
                 Texture2D previewTexture = towerTextures[NewTowerIndex];
+                if(level.GetIndex(cellX,cellY)!=1 && cellX<level.Map.GetLength(1) && cellY<level.Map.GetLength(0)) 
                 spriteBatch.Draw(previewTexture, new Rectangle(tileX, tileY, previewTexture.Width, previewTexture.Height), Color.White);
 
             }

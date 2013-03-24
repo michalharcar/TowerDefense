@@ -17,7 +17,7 @@ namespace TowerDefense.Towers
         public SpikeTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position) {
             this.damage = 20; // Set the damage.
             this.cost = 40;   // Set the initial cost.
-            this.radius = 48; // Set the radius.
+            this.radius = 100; // Set the radius.
             // Store a list of all the directions the tower can shoot.
             directions = new Vector2[] {
                  new Vector2(-1, -1), // North West
