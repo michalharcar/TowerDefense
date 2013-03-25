@@ -18,9 +18,6 @@ namespace TowerDefense.GUI
         private Vector2 towerTextPos;
         private Vector2 goldPos;
         private Vector2 lifePos;
-        private SlowTower slowTower;
-        private CannonTower cannonTower;
-        private SpikeTower spikeTower;
         private Texture2D goldTexture;
         private Texture2D lifeTexture;
 

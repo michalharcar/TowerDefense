@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TowerDefense
+namespace TowerDefense.Towers
 {
     public class Bullet : Sprite  {
         private int damage;
@@ -23,7 +23,6 @@ namespace TowerDefense
         }
 
         public Bullet(Texture2D texture, Vector2 position, Vector2 velocity, int speed, int damage) : base(texture, position) {
-            this.rotation = rotation;
             this.damage = damage;
             this.speed = speed;
             this.velocity = velocity * speed;

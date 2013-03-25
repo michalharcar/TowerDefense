@@ -35,7 +35,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bullet.cs" />
+    <Compile Include="Towers\Bullet.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Towers\CannonTower.cs" />
@@ -46,6 +46,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sprite.cs" />
+    <Compile Include="Towers\Laser.cs" />
+    <Compile Include="Towers\LaserTower.cs" />
     <Compile Include="Towers\SlowTower.cs" />
     <Compile Include="Towers\SpikeTower.cs" />
     <Compile Include="Towers\Tower.cs" />

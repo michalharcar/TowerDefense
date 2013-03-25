@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TowerDefense.Towers;
 
 namespace TowerDefense.Towers
 {
@@ -16,6 +17,8 @@ namespace TowerDefense.Towers
         protected Texture2D bulletTexture;
         protected float bulletTimer; // How long ago was a bullet fired
         protected List<Bullet> bulletList = new List<Bullet>();
+        protected List<Laser> laserList = new List<Laser>();
+        protected bool laserOn;
 
         public virtual bool HasTarget {
             // Check if the tower has a target.
@@ -34,6 +37,10 @@ namespace TowerDefense.Towers
             get { return radius; }
         }
 
+        public Tower(Texture2D texture, Vector2 position) : base(texture, position) {
+            laserOn = false;
+        }
+
         public Tower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, position) {
             this.bulletTexture = bulletTexture;
         }
@@ -43,6 +50,7 @@ namespace TowerDefense.Towers
             bulletTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (target != null)  {
                 FaceTarget();
+                laserOn = true;
                 if (!IsInRange(target.Center) || target.IsDead) {
                     target = null;
                     bulletTimer = 0;
