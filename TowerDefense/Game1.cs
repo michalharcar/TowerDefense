@@ -25,6 +25,8 @@ namespace TowerDefense
         Button cannonButton;
         Button spikeButton;
         Button slowButton;
+        Button laserButton;
+        Button playButton;
 
         public Game1()
             : base()
@@ -32,7 +34,7 @@ namespace TowerDefense
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = level.Width * 32;
-            graphics.PreferredBackBufferHeight = level.RowCount * 32 + 64;
+            graphics.PreferredBackBufferHeight = level.Height * 32 + 64;
             graphics.ApplyChanges();
             IsMouseVisible = true;
 
@@ -65,13 +67,15 @@ namespace TowerDefense
             Texture2D[] towerTextures = new Texture2D[] {
               Content.Load<Texture2D>("cannonTower"),
               Content.Load<Texture2D>("spikeTower"),
-              Content.Load<Texture2D>("slowTower")
+              Content.Load<Texture2D>("slowTower"),
+              Content.Load<Texture2D>("laserTower"),
             };
             Texture2D[] bulletTextures = new Texture2D[] { 
               Content.Load<Texture2D>("bullet"),
               Content.Load<Texture2D>("spike"),
               Content.Load<Texture2D>("sbullet")
             };
+            Texture2D laserTexture = Content.Load<Texture2D>("laser");
             Texture2D topBar = Content.Load<Texture2D>("interface\\toolbar");
             Texture2D gold = Content.Load<Texture2D>("interface\\gold");
             Texture2D life = Content.Load<Texture2D>("interface\\life");
@@ -81,27 +85,40 @@ namespace TowerDefense
             Texture2D cannonButtonNormal = Content.Load<Texture2D>("interface\\cannon_button1");
             Texture2D cannonButtonHover = Content.Load<Texture2D>("interface\\cannon_button2");
             Texture2D cannonButtonPressed = Content.Load<Texture2D>("interface\\cannon_button3");
-            cannonButton = new Button(cannonButtonNormal, cannonButtonHover, cannonButtonPressed, new Vector2(0, level.RowCount * 32), player);
+            cannonButton = new Button(cannonButtonNormal, cannonButtonHover, cannonButtonPressed, new Vector2(0, level.Height * 32), player);
             cannonButton.Clicked += new EventHandler(cannonButton_Clicked);
             
             Texture2D spikeNormal = Content.Load<Texture2D>("interface\\spike_button1");
             Texture2D spikeHover = Content.Load<Texture2D>("interface\\spike_button2");
             Texture2D spikePressed = Content.Load<Texture2D>("interface\\spike_button3");
-            spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.RowCount * 32), player);
+            spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.Height * 32), player);
             spikeButton.Clicked += new EventHandler(spikeButton_Clicked);
 
             Texture2D slowNormal = Content.Load<Texture2D>("interface\\slow_button1");
             Texture2D slowHover = Content.Load<Texture2D>("interface\\slow_button2");
             Texture2D slowPressed = Content.Load<Texture2D>("interface\\slow_button3");
-            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.RowCount * 32), player);
+            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.Height * 32), player);
             slowButton.Clicked += new EventHandler(slowButton_Clicked);
+
+            Texture2D laserButtonNormal = Content.Load<Texture2D>("interface\\laser_button1");
+            Texture2D laserButtonHover = Content.Load<Texture2D>("interface\\laser_button2");
+            Texture2D laserButtonPressed = Content.Load<Texture2D>("interface\\laser_button3");
+            laserButton = new Button(laserButtonNormal, laserButtonHover, laserButtonPressed, new Vector2(96, level.Height * 32), player);
+            laserButton.Clicked += new EventHandler(laserButton_Clicked);
+
+            Texture2D playButtonNormal = Content.Load<Texture2D>("interface\\play_button1");
+            Texture2D playButtonHover = Content.Load<Texture2D>("interface\\play_button2");
+            Texture2D playButtonPressed = Content.Load<Texture2D>("interface\\play_button3");
+            playButton = new Button(playButtonNormal, playButtonHover, playButtonPressed, new Vector2((level.Width-1)*32, level.Height * 32 + 32), player);
+            playButton.Clicked += new EventHandler(playButton_Clicked);
                     
             cannonButton.OnPress += new EventHandler(cannonButton_OnPress);
             spikeButton.OnPress += new EventHandler(spikeButton_OnPress);
             slowButton.OnPress += new EventHandler(slowButton_OnPress);
+            laserButton.OnPress += new EventHandler(laserButton_OnPress);
 
-            toolBar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.RowCount * 32), level);       
-            player = new Player(level, towerTextures, bulletTextures);
+            toolBar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
+            player = new Player(level, towerTextures, bulletTextures, laserTexture);
             waveManager = new WaveManager(player, level, 24, enemyTexture, healthTexture);
             level.AddTexture(grass);
             level.AddTexture(path);
@@ -129,6 +146,8 @@ namespace TowerDefense
             cannonButton.Update(gameTime);
             spikeButton.Update(gameTime);
             slowButton.Update(gameTime);
+            laserButton.Update(gameTime);
+            playButton.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -147,6 +166,8 @@ namespace TowerDefense
             cannonButton.Draw(spriteBatch);
             spikeButton.Draw(spriteBatch);
             slowButton.Draw(spriteBatch);
+            laserButton.Draw(spriteBatch);
+            playButton.Draw(spriteBatch);
             player.DrawPreview(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
@@ -167,6 +188,14 @@ namespace TowerDefense
             player.NewTowerIndex = 2;
         }
 
+        private void laserButton_Clicked(object sender, EventArgs e) {
+            player.NewTowerType = "Laser Tower";
+            player.NewTowerIndex = 3;
+        }
+
+        private void playButton_Clicked(object sender, EventArgs e) {
+        }
+
         private void cannonButton_OnPress(object sender, EventArgs e) {
             player.NewTowerType = "Cannon Tower";
             player.NewTowerIndex = 0;
@@ -178,6 +207,14 @@ namespace TowerDefense
         private void slowButton_OnPress(object sender, EventArgs e) {
             player.NewTowerType = "Slow Tower";
             player.NewTowerIndex = 2;
+        }
+
+        private void laserButton_OnPress(object sender, EventArgs e) {
+            player.NewTowerType = "Laser Tower";
+            player.NewTowerIndex = 3;
+        }
+
+        private void playButton_OnPress(object sender, EventArgs e) {
         }
 
     }

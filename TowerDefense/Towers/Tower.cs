@@ -6,6 +6,10 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TowerDefense.Towers;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Storage;
+using Microsoft.Xna.Framework.GamerServices;
 
 namespace TowerDefense.Towers
 {
@@ -15,6 +19,7 @@ namespace TowerDefense.Towers
         protected float radius; // How far the tower can shoot
         protected Enemy target;
         protected Texture2D bulletTexture;
+        protected Texture2D laserTexture;
         protected float bulletTimer; // How long ago was a bullet fired
         protected List<Bullet> bulletList = new List<Bullet>();
         protected List<Laser> laserList = new List<Laser>();
@@ -38,7 +43,7 @@ namespace TowerDefense.Towers
         }
 
         public Tower(Texture2D texture, Vector2 position) : base(texture, position) {
-            laserOn = false;
+ 
         }
 
         public Tower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, position) {
@@ -50,7 +55,6 @@ namespace TowerDefense.Towers
             bulletTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (target != null)  {
                 FaceTarget();
-                laserOn = true;
                 if (!IsInRange(target.Center) || target.IsDead) {
                     target = null;
                     bulletTimer = 0;
@@ -59,9 +63,12 @@ namespace TowerDefense.Towers
         }
 
         public override void Draw(SpriteBatch spriteBatch) {
+            base.Draw(spriteBatch);
             foreach (Bullet bullet in bulletList)
                 bullet.Draw(spriteBatch);
-            base.Draw(spriteBatch);
+            foreach(Laser laser in laserList)
+                laser.Draw(spriteBatch);
+            
         }
 
         public bool IsInRange(Vector2 position)   {
@@ -80,10 +87,18 @@ namespace TowerDefense.Towers
         }
 
         protected void FaceTarget()  {
-            Vector2 direction = center - target.Center;
-            direction.Normalize();
-            rotation = (float)Math.Atan2(-direction.X, direction.Y);
-        }
+                 if(!(this is LaserTower)) {
+                     Vector2 direction = center - target.Center;
+                     direction.Normalize();
+                     rotation = (float) Math.Atan2(-direction.X, direction.Y);
+                 }
+                 else {
+                     Vector2 direction = Top - target.Center;
+                     direction.Normalize();
+                     laserRotation = (float) Math.Atan2(-direction.X, direction.Y) - (float) Math.PI / 2;
+
+                 }
+            }
 
 
 

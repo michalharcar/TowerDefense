@@ -33,7 +33,7 @@ namespace TowerDefense
 
         private void AddEnemy() {
             Enemy enemy = new Enemy(enemyTexture,
-            level.Waypoints.Peek(), 50, 1, 0.5f);
+            level.Waypoints.Peek(), 100, 1, 0.5f);
             enemy.SetWaypoints(level.Waypoints);
             enemies.Add(enemy);
             spawnTimer = 0;

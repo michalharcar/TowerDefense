@@ -22,12 +22,12 @@ namespace TowerDefense {
         public int Width {
             get { return map.GetLength(1); }
         }
-        public int RowCount {
+        public int Height {
             get { return map.GetLength(0); }
         }
 
         public Level() {
-            map = loadLevel("level3");
+            map = loadLevel("level");
             makePath();
 
         }
@@ -38,7 +38,7 @@ namespace TowerDefense {
 
         public void Draw(SpriteBatch batch) {
             for(int col = 0; col < Width; col++) {
-                for(int row = 0; row < RowCount; row++) {
+                for(int row = 0; row < Height; row++) {
                     int textureIndex = map[row, col];
                     if(textureIndex == -1)
                         continue;
@@ -49,7 +49,7 @@ namespace TowerDefense {
         }
 
         public int GetIndex(int cellX, int cellY) {
-            if(cellX < 0 || cellX > Width - 1 || cellY < 0 || cellY > RowCount - 1)
+            if(cellX < 0 || cellX > Width - 1 || cellY < 0 || cellY > Height - 1)
                 return 0;
             else
                 return map[cellY, cellX];

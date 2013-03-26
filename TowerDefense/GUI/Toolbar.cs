@@ -12,7 +12,7 @@ namespace TowerDefense.GUI
 {
     class Toolbar {
         private Texture2D toolbarTexture;
-        public SpriteFont font;
+        private SpriteFont font;
         private Vector2 position;
         private Vector2 textPos;  
         private Vector2 towerTextPos;
@@ -28,9 +28,9 @@ namespace TowerDefense.GUI
             this.font = font;
             this.position = position;
             towerTextPos = new Vector2(10, position.Y + 42);
-            textPos = new Vector2((level.Map.GetLength(1) - 3) * 32, position.Y + 10);
-            goldPos = new Vector2((level.Map.GetLength(1) - 4) * 32, position.Y);
-            lifePos = new Vector2((level.Map.GetLength(1) - 2) * 32, position.Y);
+            textPos = new Vector2((level.Width - 3) * 32, position.Y + 10);
+            goldPos = new Vector2((level.Width - 4) * 32, position.Y);
+            lifePos = new Vector2((level.Width - 2) * 32, position.Y);
             
         }
 
@@ -50,11 +50,18 @@ namespace TowerDefense.GUI
                     spriteBatch.DrawString(font, "CannonTower:", towerTextPos, Color.Orange);
                     towerText = string.Format("                             Cost: {0}   Radius: {1}   Damage: {2}", player.TowerToAdd.Cost, player.TowerToAdd.Radius, player.TowerToAdd.Damage);
                 }
-                else {
+                else if(player.TowerToAdd is SpikeTower) {
                     spriteBatch.DrawString(font, "SpikeTower:", towerTextPos, Color.Green);
                     towerText = string.Format("                          Cost: {0}   Radius: {1}   Damage: {2}", player.TowerToAdd.Cost, player.TowerToAdd.Radius, player.TowerToAdd.Damage);
                 }
+                else {
+                    spriteBatch.DrawString(font, "LaserTower:", towerTextPos, Color.Green);
+                    towerText = string.Format("                          Cost: {0}   Radius: {1}   Damage: {2}", player.TowerToAdd.Cost, player.TowerToAdd.Radius, player.TowerToAdd.Damage);
+                }
                 spriteBatch.DrawString(font, towerText, towerTextPos, Color.White);
+            }
+            if(!player.EnoughGold) {
+                spriteBatch.DrawString(font, "Not enough coins for this tower", towerTextPos, Color.Red);
             }
         }
 

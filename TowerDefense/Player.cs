@@ -25,8 +25,10 @@ namespace TowerDefense
         private Level level;
         private Texture2D[] towerTextures;
         private Texture2D[] bulletTextures;
+        private Texture2D laserTexture;
         // The type of tower to add.
         private string newTowerType;
+        public bool EnoughGold { get; private set;}
         public string NewTowerType {
             set { newTowerType = value; }
         }
@@ -36,14 +38,16 @@ namespace TowerDefense
         public Tower TowerToAdd { get { return towerToAdd; } }
 
 
-        public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures)
+        public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures, Texture2D laserTexture)
         {
             this.level = level;
             this.towerTextures = towerTextures;
             this.bulletTextures = bulletTextures;
+            this.laserTexture = laserTexture;
             towerToAdd = null;
             Money = 100;
             Lives = 10;
+            EnoughGold = true;
         }
 
         public void Update(GameTime gameTime, List<Enemy> enemies)  {
@@ -54,6 +58,7 @@ namespace TowerDefense
             tileY = cellY * 32; // Convert from array space to level space
             if (mouseState.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Pressed) {
                 if (string.IsNullOrEmpty(newTowerType) == false) {
+                    EnoughGold = true;
                     AddTower();
                 }
             }
@@ -74,7 +79,7 @@ namespace TowerDefense
         }
 
         private bool IsCellClear()  {
-            bool inBounds = cellX >= 0 && cellY >= 0 && cellX < level.Width && cellY < level.RowCount; // Make sure tower is within limits              
+            bool inBounds = cellX >= 0 && cellY >= 0 && cellX < level.Width && cellY < level.Height; // Make sure tower is within limits              
             bool spaceClear = true;
             foreach (Tower tower in towers)  { // Check that there is no tower here
                 spaceClear = (tower.Position != new Vector2(tileX, tileY));
@@ -104,18 +109,26 @@ namespace TowerDefense
                             bulletTextures[2], new Vector2(tileX, tileY));
                         break;
                     }
+                case "Laser Tower": {
+                        towerToAdd = new LaserTower(towerTextures[3],
+                            laserTexture, new Vector2(tileX, tileY));
+                        break;
+                    }
 
             }
             // Only add the tower if there is a space and if the player can afford it.
             if (IsCellClear() == true && towerToAdd.Cost <= Money) {
+                EnoughGold = true;
                 towers.Add(towerToAdd);              
                 Money -= towerToAdd.Cost;
                 // Reset the newTowerType field.
                 newTowerType = string.Empty;
                 towerToAdd = null;
             }
-            else {
+            else if(IsCellClear() == true && towerToAdd.Cost > Money) {
                 newTowerType = string.Empty;
+                towerToAdd = null;
+                EnoughGold = false;
             }
         }
 

@@ -15,8 +15,13 @@ namespace TowerDefense
         protected Vector2 center;
         protected Vector2 origin;
         protected float rotation;
+        protected float laserRotation;
         public Vector2 Center {
             get { return center; }
+        }
+        protected Vector2 top;
+        public Vector2 Top {
+            get { return top; }
         }
         public Vector2 Position {
             get { return position; }
@@ -31,6 +36,7 @@ namespace TowerDefense
             //origin = new Vector2(texture.Width / 2, texture.Height / 2);
             center = new Vector2(position.X + 16, position.Y + 16);
             origin = new Vector2(16, 16);
+            top = new Vector2(position.X + 16, position.Y+4);
         }
 
         public virtual void Update(GameTime gameTime) {
@@ -45,6 +51,10 @@ namespace TowerDefense
 
         public virtual void Draw(SpriteBatch spriteBatch, Rectangle rectangle) {
             spriteBatch.Draw(texture, center, rectangle, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 0);
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch, Rectangle rectangle, float laserRotation, Vector2 origin) {
+            spriteBatch.Draw(texture, position, rectangle, Color.White, laserRotation, origin, 1.0f, SpriteEffects.None, 0);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, Color color) {
