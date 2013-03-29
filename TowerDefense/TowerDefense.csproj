@@ -51,6 +51,7 @@
     <Compile Include="Towers\SlowTower.cs" />
     <Compile Include="Towers\SpikeTower.cs" />
     <Compile Include="Towers\Tower.cs" />
+    <Compile Include="Towers\UpgradeManager.cs" />
     <Compile Include="Wave.cs" />
     <Compile Include="WaveManager.cs" />
   </ItemGroup>

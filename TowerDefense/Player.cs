@@ -19,7 +19,7 @@ namespace TowerDefense
             get; set; }
         public int Lives {
         get; set; }
-        private List<Tower> towers = new List<Tower>();
+        public List<Tower> towers = new List<Tower>();
         private MouseState mouseState; // Mouse state for the current frame
         private MouseState oldState; // Mouse state for the previous frame
         private Level level;
@@ -63,9 +63,12 @@ namespace TowerDefense
                 }
             }
             foreach (Tower tower in towers) {
-                if (tower.HasTarget == false) {
+                if(tower is SlowTower)
                     tower.GetClosestEnemy(enemies);
-                }
+                else {
+                if (tower.HasTarget == false)
+                    tower.GetClosestEnemy(enemies);
+               }
                 tower.Update(gameTime);
 
             }

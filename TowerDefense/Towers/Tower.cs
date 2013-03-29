@@ -6,10 +6,6 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TowerDefense.Towers;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Storage;
-using Microsoft.Xna.Framework.GamerServices;
 
 namespace TowerDefense.Towers
 {
@@ -24,6 +20,7 @@ namespace TowerDefense.Towers
         protected List<Bullet> bulletList = new List<Bullet>();
         protected List<Laser> laserList = new List<Laser>();
         protected bool laserOn;
+        public int UpgradeLevel { get; set; }
 
         public virtual bool HasTarget {
             // Check if the tower has a target.
@@ -43,11 +40,12 @@ namespace TowerDefense.Towers
         }
 
         public Tower(Texture2D texture, Vector2 position) : base(texture, position) {
- 
+            UpgradeLevel = 1;
         }
 
         public Tower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, position) {
             this.bulletTexture = bulletTexture;
+            UpgradeLevel = 1;
         }
 
         public override void Update(GameTime gameTime) {

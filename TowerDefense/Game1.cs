@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using TowerDefense.GUI;
+using TowerDefense.Towers;
 #endregion
 
 namespace TowerDefense
@@ -21,12 +22,13 @@ namespace TowerDefense
         Level level = new Level();
         WaveManager waveManager;
         Player player;
-        Toolbar toolBar;
+        Toolbar toolbar;
         Button cannonButton;
         Button spikeButton;
         Button slowButton;
         Button laserButton;
         Button playButton;
+        UpgradeManager upgradeManager;
 
         public Game1()
             : base()
@@ -117,9 +119,10 @@ namespace TowerDefense
             slowButton.OnPress += new EventHandler(slowButton_OnPress);
             laserButton.OnPress += new EventHandler(laserButton_OnPress);
 
-            toolBar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
+            toolbar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
             player = new Player(level, towerTextures, bulletTextures, laserTexture);
             waveManager = new WaveManager(player, level, 24, enemyTexture, healthTexture);
+            upgradeManager = new UpgradeManager(level, player, toolbar);
             level.AddTexture(grass);
             level.AddTexture(path);
 
@@ -148,6 +151,7 @@ namespace TowerDefense
             slowButton.Update(gameTime);
             laserButton.Update(gameTime);
             playButton.Update(gameTime);
+            upgradeManager.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -162,7 +166,7 @@ namespace TowerDefense
             level.Draw(spriteBatch);
             waveManager.Draw(spriteBatch);
             player.Draw(spriteBatch);
-            toolBar.Draw(spriteBatch, player);
+            toolbar.Draw(spriteBatch, player);
             cannonButton.Draw(spriteBatch);
             spikeButton.Draw(spriteBatch);
             slowButton.Draw(spriteBatch);
@@ -214,9 +218,6 @@ namespace TowerDefense
             player.NewTowerType = "Laser Tower";
             player.NewTowerIndex = 3;
         }
-
-        //private void playButton_OnPress(object sender, EventArgs e) {
-        //}
 
     }
 }
