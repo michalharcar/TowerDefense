@@ -194,6 +194,7 @@ namespace TowerDefense
         }
 
         private void playButton_Clicked(object sender, EventArgs e) {
+            waveManager.StartNextWave();
         }
 
         private void cannonButton_OnPress(object sender, EventArgs e) {
@@ -214,8 +215,8 @@ namespace TowerDefense
             player.NewTowerIndex = 3;
         }
 
-        private void playButton_OnPress(object sender, EventArgs e) {
-        }
+        //private void playButton_OnPress(object sender, EventArgs e) {
+        //}
 
     }
 }

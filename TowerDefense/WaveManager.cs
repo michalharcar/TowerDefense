@@ -38,28 +38,28 @@ namespace TowerDefense
                     numberModifier, player, level, enemyTexture, healthTexture);
                 waves.Enqueue(wave);
             }
-            StartNextWave();
         }
 
         public void Update(GameTime gameTime)  {
             CurrentWave.Update(gameTime); // Update the wave
             if (CurrentWave.RoundOver) { // Check if it has finished
                 waveFinished = true;
+                waves.Dequeue();
             }
-            if (waveFinished)  { // If it has finished
-                timeSinceLastWave += (float)gameTime.ElapsedGameTime.TotalSeconds; // Start the timer
-            }
-            if (timeSinceLastWave > 30.0f)  { // If 30 seconds has passed
-                waves.Dequeue(); // Remove the finished wave
-                StartNextWave(); // Start the next wave
-            }
+         //   if (waveFinished)  { // If it has finished
+        //        timeSinceLastWave += (float)gameTime.ElapsedGameTime.TotalSeconds; // Start the timer
+        //    }
+       //     if (timeSinceLastWave > 2.0f)  { // If 30 seconds has passed
+                // Remove the finished wave
+            //    StartNextWave(); // Start the next wave
+       //     }
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             CurrentWave.Draw(spriteBatch);
         }
 
-        private void StartNextWave() {
+        public void StartNextWave() {
             if (waves.Count > 0)  { // If there are still waves left
                 waves.Peek().Start(); // Start the next one
                 timeSinceLastWave = 0; // Reset timer

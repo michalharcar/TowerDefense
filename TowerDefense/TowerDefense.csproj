@@ -144,6 +144,7 @@
     <Content Include="Content\interface\spike_button3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Content\level.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
