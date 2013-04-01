@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TowerDefense.Enemies;
 
 namespace TowerDefense.Towers {
     public class Laser : Tower {

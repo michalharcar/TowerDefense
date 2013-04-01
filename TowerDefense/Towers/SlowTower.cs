@@ -19,7 +19,7 @@ namespace TowerDefense.Towers
             this.damage = 0; // Set the damage
             this.cost = 15;   // Set the initial cost
             this.radius = 80; // Set the radius
-            this.speedModifier = 0.3f;
+            this.speedModifier = 0.4f;
             this.modifierDuration = 2.0f;
         }
 

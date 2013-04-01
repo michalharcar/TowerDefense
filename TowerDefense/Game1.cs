@@ -65,7 +65,11 @@ namespace TowerDefense
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D grass = Content.Load<Texture2D>("grass");
             Texture2D path = Content.Load<Texture2D>("path");
-            Texture2D enemyTexture = Content.Load<Texture2D>("enemymove");
+            Texture2D[] enemyTextures = new Texture2D[]{
+                Content.Load<Texture2D>("enemymove"),
+                Content.Load<Texture2D>("birdmove"),
+                Content.Load<Texture2D>("bossmove"),
+        };
             Texture2D[] towerTextures = new Texture2D[] {
               Content.Load<Texture2D>("cannonTower"),
               Content.Load<Texture2D>("spikeTower"),
@@ -121,7 +125,7 @@ namespace TowerDefense
 
             toolbar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
             player = new Player(level, towerTextures, bulletTextures, laserTexture);
-            waveManager = new WaveManager(player, level, 24, enemyTexture, healthTexture);
+            waveManager = new WaveManager(player, level, 24, enemyTextures, healthTexture);
             upgradeManager = new UpgradeManager(level, player, toolbar);
             level.AddTexture(grass);
             level.AddTexture(path);

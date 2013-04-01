@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace TowerDefense {
+namespace TowerDefense.Enemies{
 
     public enum Direction {
         NORTH,
@@ -21,8 +21,8 @@ namespace TowerDefense {
         public float HealthPercentage {
             get { return currentHealth / startHealth; }
         }
-        protected bool alive = true;
-        protected float speed = 0.5f;
+        protected bool alive;
+        protected float speed;
         protected int bountyGiven;
         protected Direction EnemyDirection { get;  set; }
         private Queue<Vector2> waypoints = new Queue<Vector2>();
@@ -56,16 +56,13 @@ namespace TowerDefense {
 
         //Animated enemy
         private new Texture2D texture;
-        float timer = 0f;
-        float interval = 200f;
-        int currentFrame = 0;
+        protected float timer = 0f;
+        protected float interval = 200f;
+        protected int currentFrame = 0;
 
-        public Enemy(Texture2D texture, Vector2 position, float health, int bountyGiven, float speed) : base(texture, position){
-            this.startHealth = health;
-            this.currentHealth = startHealth;
-            this.bountyGiven = bountyGiven;
-            this.speed = speed;
+        public Enemy(Texture2D texture, Vector2 position) : base(texture, position){
             this.texture = texture;
+            alive = true;
         }
 
         public void SetWaypoints(Queue<Vector2> waypoints) {
@@ -130,51 +127,50 @@ namespace TowerDefense {
             if (alive) {
                Rectangle rectangle = new Rectangle(32 * currentFrame, 0, 32, 32);
                 base.Draw(spriteBatch, rectangle);
-              //  base.Draw(spriteBatch);
             }
         }
 
-        public void MoveRight(GameTime gameTime){        
-	        if(currentFrame< 3 || currentFrame > 5)
-            currentFrame = 3;	    	 
+        public virtual void MoveRight(GameTime gameTime){        
+	        if(currentFrame< 4 || currentFrame > 7)
+            currentFrame = 4;	    	 
 	        timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;	 
 	    if (timer > interval) {
 	        currentFrame++;         
-	        if (currentFrame > 5) 
-	            currentFrame = 3;        
+	        if (currentFrame > 7) 
+	            currentFrame = 4;        
 	        timer = 0f;
 	    }
 	}
-        public void MoveUp(GameTime gameTime) {
-            if(currentFrame < 0 || currentFrame > 2)
+        public virtual void MoveUp(GameTime gameTime) {
+            if(currentFrame < 0 || currentFrame > 3)
             currentFrame = 0;
             timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             if(timer > interval) {
                 currentFrame++;
-                if(currentFrame > 2)
+                if(currentFrame > 3)
                     currentFrame = 0;
                 timer = 0f;
             }
         }
-        public void MoveDown(GameTime gameTime) {
-            if(currentFrame < 9 || currentFrame > 11)
-            currentFrame = 9;
+        public virtual void MoveDown(GameTime gameTime) {
+            if(currentFrame < 12 || currentFrame > 15)
+            currentFrame = 12;
+            timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            if(timer > interval) {
+                currentFrame++;
+                if(currentFrame > 15)
+                    currentFrame = 12;
+                timer = 0f;
+            }
+        }
+        public virtual void MoveLeft(GameTime gameTime) {
+            if(currentFrame < 8 || currentFrame > 11)
+            currentFrame = 8;
             timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
             if(timer > interval) {
                 currentFrame++;
                 if(currentFrame > 11)
-                    currentFrame = 9;
-                timer = 0f;
-            }
-        }
-        public void MoveLeft(GameTime gameTime) {
-            if(currentFrame < 6 || currentFrame > 8)
-            currentFrame = 6;
-            timer += (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            if(timer > interval) {
-                currentFrame++;
-                if(currentFrame > 8)
-                    currentFrame = 6;
+                    currentFrame = 8;
                 timer = 0f;
             }
         }

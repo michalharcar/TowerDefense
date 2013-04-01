@@ -5,10 +5,11 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TowerDefense.Enemies;
 
 namespace TowerDefense
 {
-    class Wave{
+    class Wave {
         private int numOfEnemies; // Number of enemies to spawn
         private int waveNumber; // What wave is this?
         private float spawnTimer = 0; // When should we spawn an enemy
@@ -16,26 +17,38 @@ namespace TowerDefense
         private bool enemyAtEnd; // Has an enemy reached the end of the path?
         private bool spawningEnemies; // Are we still spawing enemies?
         private Level level; // A reference of the level
-        private Texture2D enemyTexture; // A texture for the enemies
+        private Texture2D[] enemyTextures; // A texture for the enemies
         public List<Enemy> enemies = new List<Enemy>(); // List of enemies
         private Player player; // A reference to the player.
         private Texture2D healthTexture; // A texture for the health bar.
 
-        public Wave(int waveNumber, int numOfEnemies, Player player, Level level, Texture2D enemyTexture, Texture2D healthTexture)
+        public Wave(int waveNumber, int numOfEnemies, Player player, Level level, Texture2D[] enemyTextures, Texture2D healthTexture)
         {
             this.waveNumber = waveNumber;
             this.numOfEnemies = numOfEnemies;
             this.player = player;
             this.level = level;
-            this.enemyTexture = enemyTexture;
+            this.enemyTextures = enemyTextures;
             this.healthTexture = healthTexture;
         }
 
         private void AddEnemy() {
-            Enemy enemy = new Enemy(enemyTexture,
-            level.Waypoints.Peek(), 100, 3, 0.5f);
-            enemy.SetWaypoints(level.Waypoints);
-            enemies.Add(enemy);
+            Enemy enemy;
+            if((waveNumber % 2 == 0) && (enemiesSpawned % 3 == 0)) {
+                    enemy = new Bird(enemyTextures[1], level.Waypoints.Peek());
+                    enemy.SetWaypoints(level.Waypoints);
+                    enemies.Add(enemy);
+            }
+            if((waveNumber % 3 == 0) && (enemiesSpawned % 6 == 0)) {
+                enemy = new Boss(enemyTextures[2], level.Waypoints.Peek());
+                enemy.SetWaypoints(level.Waypoints);
+                enemies.Add(enemy);
+            }
+            else {
+                enemy = new Spider(enemyTextures[0], level.Waypoints.Peek());
+                enemy.SetWaypoints(level.Waypoints);
+                enemies.Add(enemy);
+            }
             spawnTimer = 0;
             enemiesSpawned++;
         }
@@ -74,7 +87,7 @@ namespace TowerDefense
             foreach (Enemy enemy in enemies) {
                 enemy.Draw(spriteBatch);
                 Rectangle healthRectangle = new Rectangle((int)enemy.Position.X,
-                                             (int)enemy.Position.Y,
+                                             (int)enemy.Position.Y-5,
                                              healthTexture.Width,
                                              healthTexture.Height);
                 spriteBatch.Draw(healthTexture, healthRectangle, Color.Gray);
@@ -82,7 +95,7 @@ namespace TowerDefense
                 float visibleWidth = (float)healthTexture.Width * healthPercentage;
 
                 healthRectangle = new Rectangle((int)enemy.Position.X,
-                                               (int)enemy.Position.Y,
+                                               (int)enemy.Position.Y-5,
                                                (int)(visibleWidth),
                                                healthTexture.Height);
 

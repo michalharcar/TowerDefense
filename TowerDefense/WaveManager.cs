@@ -5,6 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TowerDefense.Enemies;
 
 namespace TowerDefense
 {
@@ -12,7 +13,7 @@ namespace TowerDefense
         private int numberOfWaves; // How many waves the game will have
         private float timeSinceLastWave; // How long since the last wave ended
         private Queue<Wave> waves = new Queue<Wave>(); // A queue of all our waves
-        private Texture2D enemyTexture; // The texture used to draw the enemies
+        private Texture2D[] enemyTextures; // The texture used to draw the enemies
         private bool waveFinished = false; // Is the current wave over?
         private Level level; // A reference to our level class
 
@@ -26,16 +27,14 @@ namespace TowerDefense
             get { return CurrentWave.RoundNumber + 1; }
         }
 
-        public WaveManager(Player player, Level level, int numberOfWaves, Texture2D enemyTexture, Texture2D healthTexture)
+        public WaveManager(Player player, Level level, int numberOfWaves, Texture2D[] enemyTextures, Texture2D healthTexture)
         {
             this.numberOfWaves = numberOfWaves;
-            this.enemyTexture = enemyTexture;
+            this.enemyTextures = enemyTextures;
             this.level = level;
-            for (int i = 0; i < numberOfWaves; i++)  {
-                int initialNumerOfEnemies = 6;
-                int numberModifier = (i / 6) + 1;
-                Wave wave = new Wave(i, initialNumerOfEnemies *
-                    numberModifier, player, level, enemyTexture, healthTexture);
+            for (int i = 1; i <= numberOfWaves; i++)  {
+                int NumberOfEnemies = 3 + 3*i;
+                Wave wave = new Wave(i, NumberOfEnemies, player, level, enemyTextures, healthTexture);
                 waves.Enqueue(wave);
             }
         }
