@@ -15,6 +15,7 @@ namespace TowerDefense.Towers
         protected int damage; // The damage done to enemy's
         protected float radius; // How far the tower can shoot
         protected Enemy target;
+        protected string name;
         protected Texture2D bulletTexture;
         protected Texture2D laserTexture;
         protected float bulletTimer; // How long ago was a bullet fired
@@ -99,7 +100,32 @@ namespace TowerDefense.Towers
                  }
             }
 
+        public string getName(){
+            return name;
+        }
 
+        public void Upgrade(Player player) {
+            switch(UpgradeLevel) {
+                case 1:
+                    if(player.Money >= 150) {
+                        damage = Damage * 2;
+                        radius = Radius * 2;
+                        player.Money -= 150;
+                        UpgradeLevel++;
+                    }
+                    break;
+                case 2:
+                    if(player.Money >= 300) {
+                        damage = Damage * 2;
+                        radius = Radius * 2;
+                        player.Money -= 300;
+                        UpgradeLevel++;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 
     }
 }

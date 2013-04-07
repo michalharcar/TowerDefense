@@ -14,6 +14,7 @@ namespace TowerDefense.Towers
             this.damage = 15; // Set the damage
             this.cost = 15;   // Set the initial cost
             this.radius = 80; // Set the radius
+            this.name = "CannonTower";
         }
 
         public override void Update(GameTime gameTime) {

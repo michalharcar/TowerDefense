@@ -14,6 +14,7 @@ namespace TowerDefense.Towers {
             this.damage = 1;
             this.cost = 50;   
             this.radius = 50;
+            this.name = "LaserTower";
             base.laserTexture = laserTexture;
         }
 

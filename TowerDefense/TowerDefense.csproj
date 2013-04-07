@@ -161,6 +161,15 @@
     <Content Include="Content\interface\toolbar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\interface\upgrade_button1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\interface\upgrade_button2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\interface\upgrade_button3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\laser.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

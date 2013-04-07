@@ -19,6 +19,7 @@ namespace TowerDefense.Towers
             this.damage = 20; // Set the damage.
             this.cost = 40;   // Set the initial cost.
             this.radius = 50; // Set the radius.
+            this.name = "SpikeTower";
             // Store a list of all the directions the tower can shoot.
             directions = new Vector2[] {
                  new Vector2(-1, -1), // North West

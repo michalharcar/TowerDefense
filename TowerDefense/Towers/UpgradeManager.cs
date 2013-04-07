@@ -14,12 +14,19 @@ namespace TowerDefense.Towers {
         private Level level;
         private Player player;
         private Toolbar toolbar;
+        private Button upgradeButton;
+        private Rectangle bounds;
+        public Tower SelectedTower { get; private set; }
         private MouseState previousState;
+        public delegate void Click();
+        public event Click OnClick;
 
-        public UpgradeManager(Level level, Player player, Toolbar toolbar) {
+        public UpgradeManager(Level level, Player player, Toolbar toolbar, Button upgradeButton) {
             this.level = level;
             this.player = player;
             this.toolbar = toolbar;
+            this.upgradeButton = upgradeButton;
+            this.bounds = new Rectangle((int) upgradeButton.Position.X, (int) upgradeButton.Position.Y, 32, 32);
         }
 
         public void upgradeTower(Tower tower) {
@@ -29,18 +36,25 @@ namespace TowerDefense.Towers {
 
         public void Update(GameTime gameTime) {
             MouseState mouseState = Mouse.GetState();
-            int mouseX = mouseState.X/32;
+            int mouseX =mouseState.X/32;
             int mouseY = mouseState.Y/32;
-            if(mouseState.LeftButton == ButtonState.Pressed && previousState.LeftButton == ButtonState.Released) {
+            if(mouseState.LeftButton == ButtonState.Pressed) {
+                player.EnoughGold = true;
                 foreach(Tower tower in player.towers) {
                     if(tower.Position.X / 32 == mouseX && tower.Position.Y / 32 == mouseY) {
                         toolbar.Upgrading = true;
                         toolbar.setTower(tower);
+                        SelectedTower = tower;
                         break;
                     }
-                    else {
+                    else if(!bounds.Contains(mouseState.X, mouseState.Y)) {
                         toolbar.Upgrading = false;
+                        SelectedTower = null;
                     }
+                    //else {
+                    //    toolbar.Upgrading = false;
+                    //    SelectedTower = null;
+                    //}
                 }
             }
             previousState = mouseState;

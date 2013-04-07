@@ -17,9 +17,13 @@ namespace TowerDefense
         private int tileX;
         private int tileY;
         public int Money {
-            get; set; }
+            get;
+            set;
+        }
         public int Lives {
-        get; set; }
+            get;
+            set;
+        }
         public List<Tower> towers = new List<Tower>();
         private MouseState mouseState; // Mouse state for the current frame
         private MouseState oldState; // Mouse state for the previous frame
@@ -29,7 +33,7 @@ namespace TowerDefense
         private Texture2D laserTexture;
         // The type of tower to add.
         private string newTowerType;
-        public bool EnoughGold { get; private set;}
+        public bool EnoughGold { get; set; }
         public string NewTowerType {
             set { newTowerType = value; }
         }
@@ -39,37 +43,36 @@ namespace TowerDefense
         public Tower TowerToAdd { get { return towerToAdd; } }
 
 
-        public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures, Texture2D laserTexture)
-        {
+        public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures, Texture2D laserTexture) {
             this.level = level;
             this.towerTextures = towerTextures;
             this.bulletTextures = bulletTextures;
             this.laserTexture = laserTexture;
             towerToAdd = null;
-            Money = 100;
+            Money = 1000;
             Lives = 10;
             EnoughGold = true;
         }
 
-        public void Update(GameTime gameTime, List<Enemy> enemies)  {
+        public void Update(GameTime gameTime, List<Enemy> enemies) {
             mouseState = Mouse.GetState();
-            cellX = (int)(mouseState.X / 32); // Convert the position of the mouse
-            cellY = (int)(mouseState.Y / 32); // from array space to level space
+            cellX = (int) (mouseState.X / 32); // Convert the position of the mouse
+            cellY = (int) (mouseState.Y / 32); // from array space to level space
             tileX = cellX * 32; // Convert from array space to level space
             tileY = cellY * 32; // Convert from array space to level space
-            if (mouseState.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Pressed) {
-                if (string.IsNullOrEmpty(newTowerType) == false) {
+            if(mouseState.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Pressed) {
+                if(string.IsNullOrEmpty(newTowerType) == false) {
                     EnoughGold = true;
                     AddTower();
                 }
             }
-            foreach (Tower tower in towers) {
+            foreach(Tower tower in towers) {
                 if(tower is SlowTower)
                     tower.GetClosestEnemy(enemies);
                 else {
-                if (tower.HasTarget == false)
-                    tower.GetClosestEnemy(enemies);
-               }
+                    if(tower.HasTarget == false)
+                        tower.GetClosestEnemy(enemies);
+                }
                 tower.Update(gameTime);
 
             }
@@ -77,27 +80,27 @@ namespace TowerDefense
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            foreach (Tower tower in towers)  {
+            foreach(Tower tower in towers) {
                 tower.Draw(spriteBatch);
             }
         }
 
-        private bool IsCellClear()  {
+        private bool IsCellClear() {
             bool inBounds = cellX >= 0 && cellY >= 0 && cellX < level.Width && cellY < level.Height; // Make sure tower is within limits              
             bool spaceClear = true;
-            foreach (Tower tower in towers)  { // Check that there is no tower here
+            foreach(Tower tower in towers) { // Check that there is no tower here
                 spaceClear = (tower.Position != new Vector2(tileX, tileY));
-                if (!spaceClear)
+                if(!spaceClear)
                     break;
             }
             bool onPath = (level.GetIndex(cellX, cellY) != 1);
             return inBounds && spaceClear && onPath; // If both checks are true return true
         }
 
-        public void AddTower()  {
-            
-            switch (newTowerType)  {
-                case "Cannon Tower":  {
+        public void AddTower() {
+
+            switch(newTowerType) {
+                case "Cannon Tower": {
                         towerToAdd = new CannonTower(towerTextures[0],
                             bulletTextures[0], new Vector2(tileX, tileY));
                         break;
@@ -107,8 +110,7 @@ namespace TowerDefense
                             bulletTextures[1], new Vector2(tileX, tileY));
                         break;
                     }
-                case "Slow Tower":
-                    {
+                case "Slow Tower": {
                         towerToAdd = new SlowTower(towerTextures[2],
                             bulletTextures[2], new Vector2(tileX, tileY));
                         break;
@@ -121,9 +123,9 @@ namespace TowerDefense
 
             }
             // Only add the tower if there is a space and if the player can afford it.
-            if (IsCellClear() == true && towerToAdd.Cost <= Money) {
+            if(IsCellClear() == true && towerToAdd.Cost <= Money) {
                 EnoughGold = true;
-                towers.Add(towerToAdd);              
+                towers.Add(towerToAdd);
                 Money -= towerToAdd.Cost;
                 // Reset the newTowerType field.
                 newTowerType = string.Empty;
@@ -138,14 +140,14 @@ namespace TowerDefense
 
         public void DrawPreview(SpriteBatch spriteBatch) {
             // Draw the tower preview.
-            if (string.IsNullOrEmpty(newTowerType) == false) {
-                int cellX = (int)(mouseState.X / 32); // Convert the position of the mouse
-                int cellY = (int)(mouseState.Y / 32); // from array space to level space
+            if(string.IsNullOrEmpty(newTowerType) == false) {
+                int cellX = (int) (mouseState.X / 32); // Convert the position of the mouse
+                int cellY = (int) (mouseState.Y / 32); // from array space to level space
                 int tileX = cellX * 32; // Convert from array space to level space
                 int tileY = cellY * 32; // Convert from array space to level space
                 Texture2D previewTexture = towerTextures[NewTowerIndex];
-                if(level.GetIndex(cellX,cellY)!=1 && cellX<level.Map.GetLength(1) && cellY<level.Map.GetLength(0)) 
-                spriteBatch.Draw(previewTexture, new Rectangle(tileX, tileY, previewTexture.Width, previewTexture.Height), Color.White);
+                if(level.GetIndex(cellX, cellY) != 1 && cellX < level.Map.GetLength(1) && cellY < level.Map.GetLength(0))
+                    spriteBatch.Draw(previewTexture, new Rectangle(tileX, tileY, previewTexture.Width, previewTexture.Height), Color.White);
 
             }
         }
