@@ -16,17 +16,18 @@ namespace TowerDefense.Towers {
         private Toolbar toolbar;
         private Button upgradeButton;
         private Rectangle bounds;
-        public Tower SelectedTower { get; private set; }
+        private Rectangle bounds2;
+        public Tower SelectedTower { get; set; }
         private MouseState previousState;
-        public delegate void Click();
-        public event Click OnClick;
+    
 
-        public UpgradeManager(Level level, Player player, Toolbar toolbar, Button upgradeButton) {
+        public UpgradeManager(Level level, Player player, Toolbar toolbar, Button upgradeButton, Button sellButton) {
             this.level = level;
             this.player = player;
             this.toolbar = toolbar;
             this.upgradeButton = upgradeButton;
             this.bounds = new Rectangle((int) upgradeButton.Position.X, (int) upgradeButton.Position.Y, 32, 32);
+            this.bounds2 = new Rectangle((int) sellButton.Position.X, (int) sellButton.Position.Y, 32, 32);
         }
 
         public void upgradeTower(Tower tower) {
@@ -47,14 +48,11 @@ namespace TowerDefense.Towers {
                         SelectedTower = tower;
                         break;
                     }
-                    else if(!bounds.Contains(mouseState.X, mouseState.Y)) {
+                    else if(!bounds.Contains(mouseState.X, mouseState.Y) && !bounds2.Contains(mouseState.X, mouseState.Y)) {
                         toolbar.Upgrading = false;
                         SelectedTower = null;
                     }
-                    //else {
-                    //    toolbar.Upgrading = false;
-                    //    SelectedTower = null;
-                    //}
+                    
                 }
             }
             previousState = mouseState;

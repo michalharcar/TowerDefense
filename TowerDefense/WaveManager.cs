@@ -11,11 +11,12 @@ namespace TowerDefense
 {
     class WaveManager{
         private int numberOfWaves; // How many waves the game will have
-        private float timeSinceLastWave; // How long since the last wave ended
+      //  private float timeSinceLastWave; // How long since the last wave ended
         private Queue<Wave> waves = new Queue<Wave>(); // A queue of all our waves
         private Texture2D[] enemyTextures; // The texture used to draw the enemies
-        private bool waveFinished = false; // Is the current wave over?
+    //    private bool waveFinished = false; // Is the current wave over?
         private Level level; // A reference to our level class
+        public bool Finished { get; private set; }
 
         public Wave CurrentWave {    // Get the wave at the front of the queue
             get { return waves.Peek(); }
@@ -32,6 +33,7 @@ namespace TowerDefense
             this.numberOfWaves = numberOfWaves;
             this.enemyTextures = enemyTextures;
             this.level = level;
+            Finished = false;
             for (int i = 1; i <= numberOfWaves; i++)  {
                 int NumberOfEnemies = 3 + 3*i;
                 Wave wave = new Wave(i, NumberOfEnemies, player, level, enemyTextures, healthTexture);
@@ -40,11 +42,17 @@ namespace TowerDefense
         }
 
         public void Update(GameTime gameTime)  {
-            CurrentWave.Update(gameTime); // Update the wave
-            if (CurrentWave.RoundOver) { // Check if it has finished
-                waveFinished = true;
-                waves.Dequeue();
-            }
+                CurrentWave.Update(gameTime); // Update the wave
+                if(CurrentWave.RoundOver) { // Check if it has finished
+         //           waveFinished = true;
+                    if(waves.Count == 1) {
+                        Finished = true;
+                    }
+                    else {
+                        waves.Dequeue();
+                    }
+                    
+                }
          //   if (waveFinished)  { // If it has finished
         //        timeSinceLastWave += (float)gameTime.ElapsedGameTime.TotalSeconds; // Start the timer
         //    }
@@ -59,10 +67,10 @@ namespace TowerDefense
         }
 
         public void StartNextWave() {
-            if (waves.Count > 0)  { // If there are still waves left
+            if(waves.Count > 0) { // If there are still waves left
                 waves.Peek().Start(); // Start the next one
-                timeSinceLastWave = 0; // Reset timer
-                waveFinished = false;
+       //         timeSinceLastWave = 0; // Reset timer
+      //          waveFinished = false;
             }
         }
 

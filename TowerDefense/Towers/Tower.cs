@@ -127,5 +127,11 @@ namespace TowerDefense.Towers
             }
         }
 
+        public void Sell(Player player) {
+            player.Money += (Cost + (150 * (UpgradeLevel-1))) / 2;
+            player.towers.Remove(this);
+            
+        }
+
     }
 }

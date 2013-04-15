@@ -17,6 +17,7 @@ namespace TowerDefense.GUI
         private Vector2 textPos;  
         private Vector2 towerTextPos;
         private Vector2 towerTextPos2;
+        private Vector2 towerTextPos3;
         private Vector2 goldPos;
         private Vector2 lifePos;
         private Texture2D goldTexture;
@@ -31,6 +32,7 @@ namespace TowerDefense.GUI
             this.font = font;
             this.position = position;
             towerTextPos = new Vector2(10, position.Y + 42);
+            towerTextPos3 = new Vector2(10, position.Y + 70);
             textPos = new Vector2((level.Width - 3) * 32, position.Y + 10);
             goldPos = new Vector2((level.Width - 4) * 32, position.Y);
             lifePos = new Vector2((level.Width - 2) * 32, position.Y);
@@ -42,39 +44,52 @@ namespace TowerDefense.GUI
             spriteBatch.Draw(toolbarTexture, position, Color.White);
             spriteBatch.Draw(goldTexture, goldPos, Color.White);
             spriteBatch.Draw(lifeTexture, lifePos, Color.White);
-            string text = string.Format(" {0}                {1}", player.Money, player.Lives);
+            string text = string.Format(" {0}              {1}", player.Money, player.Lives);
             spriteBatch.DrawString(font, text, textPos, Color.White);
             string towerText;
+            string towerText3;
             if(Upgrading) {
+              //  towerText = string.Format("");
+                towerTextPos2 = new Vector2(12 + tower.getName().Length * 8, position.Y + 42);
+                spriteBatch.DrawString(font, tower.getName() + ":  ", towerTextPos, Color.Red);
                 towerText = string.Format("");
-                if(tower is CannonTower) {
-                    spriteBatch.DrawString(font, "CannonTower:", towerTextPos, Color.Orange);
-                }
+                towerText3 = string.Format("");
                 if(tower is SlowTower) {
                     spriteBatch.DrawString(font, "SlowTower:", towerTextPos, Color.Blue);
-                    if(tower.UpgradeLevel == 1) {
-                        towerText = string.Format("                         lvl 1(lvl 2)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).SpeedModifier, ((SlowTower) tower).SpeedModifier * 2);
-                    }
-                    else {
-                        towerText = string.Format("                         lvl 2 - fully upgraded");
+                    switch(tower.UpgradeLevel) {
+                        case 1:
+                            towerText = string.Format("lvl 1(lvl 2)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).SpeedModifier, ((SlowTower) tower).SpeedModifier * 2);
+                            towerText3 = string.Format("UPGRADE - 150 coins      SELL + {0} coins", tower.Cost/2);
+                            break;
+                        case 2:
+                            towerText = string.Format("lvl 2(lvl 3)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).SpeedModifier, ((SlowTower) tower).SpeedModifier * 2);
+                            towerText3 = string.Format("UPGRADE - 300 coins          SELL + {0} coins", (tower.Cost + 150) / 2);
+                            break;
+                        case 3:
+                            towerText = string.Format("lvl 3  Radius: {0}  Slowmo duration: {1}", tower.Radius, ((SlowTower) tower).SpeedModifier);
+                            towerText3 = string.Format("FULLY UPGRADED          SELL + {0} coins", (tower.Cost + 150 * 2) / 2);
+                            break;
                     }
                 }
-                if(tower is LaserTower) {
-                    spriteBatch.DrawString(font, "LaserTower:", towerTextPos, Color.Red);
-                }
-                if(tower is SpikeTower) {
-                    spriteBatch.DrawString(font, "SpikeTower:", towerTextPos, Color.Green);
-                }
-                if(!(tower is SlowTower)) {
-                    if(tower.UpgradeLevel == 1) {
-                        towerText = string.Format("                         lvl 1(lvl 2)  Radius: {0}({1})   Damage: {2}({3}) ", tower.Radius, tower.Radius * 2, tower.Damage, tower.Damage * 2);
+                else {
+                    switch(tower.UpgradeLevel) {
+                        case 1:
+                            towerText = string.Format("lvl 1(lvl 2)  Radius: {0}({1})   Damage: {2}({3}) ", tower.Radius, tower.Radius * 2, tower.Damage, tower.Damage * 2);
+                            towerText3 = string.Format("UPGRADE - 150 coins          SELL + {0} coins", tower.Cost / 2);
+                            break;
+                        case 2:
+                            towerText = string.Format("lvl 2(lvl 3)  Radius: {0}({1})   Damage: {2}({3})", tower.Radius, tower.Radius * 2, tower.Damage, tower.Damage * 2);
+                            towerText3 = string.Format("UPGRADE - 300 coins          SELL + {0} coins", (tower.Cost + 150) / 2);
+                            break;
+                        case 3:
+                            towerText = string.Format("lvl 3  Radius: {0}   Damage: {1}", tower.Radius, tower.Damage);
+                            towerText3 = string.Format("FULLY UPGRADED          SELL + {0} coins", (tower.Cost + 150 * 2) / 2);
+                            break;
                     }
-                    else {
-                        towerText = string.Format("                          lvl 2(lvl 3)  Radius: {0}({1})   Damage: {2}({3})", tower.Radius, tower.Radius * 2, tower.Damage, tower.Damage * 2);
-                    }
-                    
+
                 }
-                spriteBatch.DrawString(font, towerText, towerTextPos, Color.White);
+                spriteBatch.DrawString(font, towerText, towerTextPos2, Color.White);
+                spriteBatch.DrawString(font, towerText3, towerTextPos3, Color.Blue);
 
             }
             else if(player.TowerToAdd != null) {

@@ -14,7 +14,10 @@ namespace TowerDefense {
     public class Level {
         int[,] map;
         public int[,] Map { get { return map; } }
+        private String level;
         private List<Texture2D> tileTextures = new List<Texture2D>();
+        private Texture2D[] backgrounds;
+        private Texture2D[] paths;
         private Queue<Vector2> waypoints = new Queue<Vector2>();
         public Queue<Vector2> Waypoints {
             get { return waypoints; }
@@ -26,24 +29,58 @@ namespace TowerDefense {
             get { return map.GetLength(0); }
         }
 
-        public Level() {
-            map = loadLevel("level");
+        public Level(String level) {
+            this.level = level;
+            map = loadLevel(level);
             makePath();
-
         }
 
         public void AddTexture(Texture2D texture) {
             tileTextures.Add(texture);
         }
+        public void AddBackground(Texture2D[] textures) {
+            this.backgrounds = textures;
+        }
+        public void AddPath(Texture2D[] paths) {
+            this.paths = paths;
+        }
+
 
         public void Draw(SpriteBatch batch) {
+            Texture2D bgtexture;
+            switch(level) {
+                case "level1":
+                    bgtexture = backgrounds[0];
+                    break;
+                case "level2":
+                    bgtexture = backgrounds[1];
+                    break;
+                default:
+                    bgtexture = backgrounds[0];
+                    break;
+            }
+                    batch.Draw(bgtexture, new Rectangle(0, 0, 600, 600), Color.White);
             for(int col = 0; col < Width; col++) {
                 for(int row = 0; row < Height; row++) {
                     int textureIndex = map[row, col];
-                    if(textureIndex == -1)
-                        continue;
-                    Texture2D texture = tileTextures[textureIndex];
-                    batch.Draw(texture, new Rectangle(col * 32, row * 32, 32, 32), Color.White);
+                    //if(textureIndex == -1)
+                    //    continue;
+                    //Texture2D texture = tileTextures[textureIndex];
+                    if(textureIndex == 1) {
+                        Texture2D texture;
+                        switch(level) {
+                            case "level1":
+                                texture = paths[0];
+                                break;
+                            case "level2":
+                                texture = paths[1];
+                                break;
+                            default:
+                                texture = paths[0];
+                                break;
+                        }
+                        batch.Draw(texture, new Rectangle(col * 32, row * 32, 32, 32), Color.White);
+                    }
                 }
             }
         }

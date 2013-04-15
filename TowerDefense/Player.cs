@@ -66,6 +66,13 @@ namespace TowerDefense
                     AddTower();
                 }
             }
+            if(mouseState.RightButton == ButtonState.Released && oldState.RightButton == ButtonState.Pressed) {
+                if(TowerToAdd!=null) {
+                    towerToAdd = null;
+                    newTowerType = string.Empty;
+                }
+            }
+
             foreach(Tower tower in towers) {
                 if(tower is SlowTower)
                     tower.GetClosestEnemy(enemies);
@@ -135,6 +142,10 @@ namespace TowerDefense
                 newTowerType = string.Empty;
                 towerToAdd = null;
                 EnoughGold = false;
+            }
+            else {
+                  newTowerType = string.Empty;
+             //   towerToAdd = null;
             }
         }
 
