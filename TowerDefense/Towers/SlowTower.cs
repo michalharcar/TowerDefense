@@ -11,9 +11,10 @@ namespace TowerDefense.Towers
     public class SlowTower : Tower {
         // Defines how fast an enemy will move when hit.
         private float speedModifier;
-        public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
+     //   public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
         // Defines how long this effect will last.
         private float modifierDuration;
+        public float ModifierDuration { get { return modifierDuration; } set { modifierDuration = value; } }
 
         public SlowTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position)  {
             this.damage = 0; // Set the damage

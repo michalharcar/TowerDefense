@@ -14,19 +14,19 @@ namespace TowerDefense.GUI {
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel("level1");
+            GUI.Menu.setLevel(1);
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel("level2");
+            GUI.Menu.setLevel(2);
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel("level3");
+            GUI.Menu.setLevel(3);
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel("level4");
+            GUI.Menu.setLevel(4);
         }
 
         private void button1_Click(object sender, EventArgs e) {

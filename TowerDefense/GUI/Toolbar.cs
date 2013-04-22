@@ -12,6 +12,9 @@ namespace TowerDefense.GUI
 {
     class Toolbar {
         private Texture2D toolbarTexture;
+        private Texture2D wallsTexture;
+        private Texture2D goldTexture;
+        private Texture2D lifeTexture;
         private SpriteFont font;
         private Vector2 position;
         private Vector2 textPos;  
@@ -20,27 +23,33 @@ namespace TowerDefense.GUI
         private Vector2 towerTextPos3;
         private Vector2 goldPos;
         private Vector2 lifePos;
-        private Texture2D goldTexture;
-        private Texture2D lifeTexture;
+        private Vector2 finalPos;
+        private Vector2 wallsPos;       
         public bool Upgrading { get; set; }
         private Tower tower;
+        private Level level;
 
-        public Toolbar(Texture2D toolbarTexture, Texture2D goldTexture, Texture2D lifeTexture, SpriteFont font, Vector2 position, Level level) {
+        public Toolbar(Texture2D walls, Texture2D toolbarTexture, Texture2D goldTexture, Texture2D lifeTexture, SpriteFont font, Vector2 position, Level level) {
+            this.wallsTexture = walls;
             this.toolbarTexture = toolbarTexture;
             this.goldTexture = goldTexture;
             this.lifeTexture = lifeTexture;
             this.font = font;
             this.position = position;
+            this.level = level;
             towerTextPos = new Vector2(10, position.Y + 42);
             towerTextPos3 = new Vector2(10, position.Y + 70);
             textPos = new Vector2((level.Width - 3) * 32, position.Y + 10);
             goldPos = new Vector2((level.Width - 4) * 32, position.Y);
             lifePos = new Vector2((level.Width - 2) * 32, position.Y);
+            finalPos = new Vector2((level.Width/2) * 32-32, 10);
+            wallsPos = new Vector2(0, position.Y -32);
             Upgrading = false;
             
         }
 
         public void Draw(SpriteBatch spriteBatch, Player player)  {
+            spriteBatch.Draw(wallsTexture, wallsPos, Color.White);
             spriteBatch.Draw(toolbarTexture, position, Color.White);
             spriteBatch.Draw(goldTexture, goldPos, Color.White);
             spriteBatch.Draw(lifeTexture, lifePos, Color.White);
@@ -58,15 +67,15 @@ namespace TowerDefense.GUI
                     spriteBatch.DrawString(font, "SlowTower:", towerTextPos, Color.Blue);
                     switch(tower.UpgradeLevel) {
                         case 1:
-                            towerText = string.Format("lvl 1(lvl 2)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).SpeedModifier, ((SlowTower) tower).SpeedModifier * 2);
+                            towerText = string.Format("lvl 1(lvl 2)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).ModifierDuration, ((SlowTower) tower).ModifierDuration * 2);
                             towerText3 = string.Format("UPGRADE - 150 coins      SELL + {0} coins", tower.Cost/2);
                             break;
                         case 2:
-                            towerText = string.Format("lvl 2(lvl 3)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).SpeedModifier, ((SlowTower) tower).SpeedModifier * 2);
+                            towerText = string.Format("lvl 2(lvl 3)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).ModifierDuration, ((SlowTower) tower).ModifierDuration * 2);
                             towerText3 = string.Format("UPGRADE - 300 coins          SELL + {0} coins", (tower.Cost + 150) / 2);
                             break;
                         case 3:
-                            towerText = string.Format("lvl 3  Radius: {0}  Slowmo duration: {1}", tower.Radius, ((SlowTower) tower).SpeedModifier);
+                            towerText = string.Format("lvl 3  Radius: {0}  Slowmo duration: {1}", tower.Radius, ((SlowTower) tower).ModifierDuration);
                             towerText3 = string.Format("FULLY UPGRADED          SELL + {0} coins", (tower.Cost + 150 * 2) / 2);
                             break;
                     }
@@ -122,6 +131,16 @@ namespace TowerDefense.GUI
             }
                 if(!player.EnoughGold) {
                     spriteBatch.DrawString(font, "Not enough coins for this tower", towerTextPos, Color.Red);
+                }
+
+                if(level.GameState == State.FINISHED) {
+                    string finalText = "You finished level " + level.LvlNumber;
+                    spriteBatch.DrawString(font, finalText, finalPos, Color.Black);
+                }
+
+                    if(level.GameState == State.PAUSED) {
+                string pauseText = string.Format("Playing time: {0} seconds", level.PlayingTime);
+                spriteBatch.DrawString(font, pauseText, finalPos, Color.Black);
                 }
                 
         }

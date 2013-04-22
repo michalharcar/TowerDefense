@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace TowerDefense.GUI {
     public partial class Menu : Form {
-        static String level = "level1";
+        static int level = 1;
         
         public Menu() {
             InitializeComponent();
@@ -28,11 +28,16 @@ namespace TowerDefense.GUI {
 
         private void button4_Click(object sender, EventArgs e) {
             Form form = new Levels();
-            form.Show();
+            form.ShowDialog();
         }
 
-        public static void setLevel(String lvl) {
+        public static void setLevel(int lvl) {
             level = lvl;
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            Form form = new Score();
+            form.ShowDialog();
         }
         
     }

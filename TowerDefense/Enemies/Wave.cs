@@ -5,9 +5,8 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TowerDefense.Enemies;
 
-namespace TowerDefense
+namespace TowerDefense.Enemies
 {
     class Wave {
         private int numOfEnemies; // Number of enemies to spawn

@@ -16,14 +16,8 @@ namespace TowerDefense
         private int cellY;
         private int tileX;
         private int tileY;
-        public int Money {
-            get;
-            set;
-        }
-        public int Lives {
-            get;
-            set;
-        }
+        public int Money { get; set; }
+        public int Lives { get; set; }
         public List<Tower> towers = new List<Tower>();
         private MouseState mouseState; // Mouse state for the current frame
         private MouseState oldState; // Mouse state for the previous frame
@@ -31,16 +25,15 @@ namespace TowerDefense
         private Texture2D[] towerTextures;
         private Texture2D[] bulletTextures;
         private Texture2D laserTexture;
-        // The type of tower to add.
         private string newTowerType;
         public bool EnoughGold { get; set; }
-        public string NewTowerType {
-            set { newTowerType = value; }
-        }
+        public string NewTowerType { set { newTowerType = value; }  }
         // The index of the new towers texture.
         public int NewTowerIndex { get; set; }
         private Tower towerToAdd;
         public Tower TowerToAdd { get { return towerToAdd; } }
+        public int TowersCreated { get; private set; }
+        public int MoneySpent { get; private set; }
 
 
         public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures, Texture2D laserTexture) {
@@ -52,6 +45,8 @@ namespace TowerDefense
             Money = 1000;
             Lives = 10;
             EnoughGold = true;
+            TowersCreated = 0;
+            MoneySpent = 0;
         }
 
         public void Update(GameTime gameTime, List<Enemy> enemies) {
@@ -134,6 +129,8 @@ namespace TowerDefense
                 EnoughGold = true;
                 towers.Add(towerToAdd);
                 Money -= towerToAdd.Cost;
+                TowersCreated++;
+                MoneySpent += towerToAdd.Cost;
                 // Reset the newTowerType field.
                 newTowerType = string.Empty;
                 towerToAdd = null;

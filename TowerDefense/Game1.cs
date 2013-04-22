@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
 using TowerDefense.GUI;
 using TowerDefense.Towers;
+using TowerDefense.Enemies;
 #endregion
 
 namespace TowerDefense
@@ -20,6 +21,7 @@ namespace TowerDefense
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Level level;
+        int lvlNumber;
         WaveManager waveManager;
         Player player;
         Toolbar toolbar;
@@ -31,15 +33,22 @@ namespace TowerDefense
         Button upgradeButton;
         Button sellButton;
         UpgradeManager upgradeManager;
+        BestScore.Score score;
+        BestScore bestScore;
+        bool saved;
 
-        public Game1(String lvl) : base() {
+        public Game1(int lvl) : base() {
             level = new Level(lvl);
+            level.GameState = State.PLAYING;
+            this.lvlNumber = lvl;
+            bestScore = new BestScore();
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.PreferredBackBufferWidth = level.Width * 32;
             graphics.PreferredBackBufferHeight = level.Height * 32 + 96;
             graphics.ApplyChanges();
-            IsMouseVisible = true;          
+            IsMouseVisible = true;
+            saved = false;
         }
 
         /// <summary>
@@ -65,11 +74,15 @@ namespace TowerDefense
             Texture2D[] paths = new Texture2D[]{
                 Content.Load<Texture2D>("path1"),
                 Content.Load<Texture2D>("path2"),
+                Content.Load<Texture2D>("path4"),
             };
             Texture2D[] background = new Texture2D[] {
                 Content.Load<Texture2D>("lvl1_bg"),
                 Content.Load<Texture2D>("lvl2_bg"),
+                Content.Load<Texture2D>("lvl3_bg"),
+                Content.Load<Texture2D>("lvl4_bg"),
             };
+            Texture2D walls = Content.Load<Texture2D>("walls");
             Texture2D[] enemyTextures = new Texture2D[]{
                 Content.Load<Texture2D>("enemymove"),
                 Content.Load<Texture2D>("birdmove"),
@@ -140,13 +153,15 @@ namespace TowerDefense
             slowButton.OnPress += new EventHandler(slowButton_OnPress);
             laserButton.OnPress += new EventHandler(laserButton_OnPress);
 
-            toolbar = new Toolbar(topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
+            toolbar = new Toolbar(walls, topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
             player = new Player(level, towerTextures, bulletTextures, laserTexture);
-            waveManager = new WaveManager(player, level, 6, enemyTextures, healthTexture);
+            waveManager = new WaveManager(player, level, lvlNumber, enemyTextures, healthTexture);
             upgradeManager = new UpgradeManager(level, player, toolbar, upgradeButton, sellButton);
+            score = new BestScore.Score(level, player);
             level.AddTexture(grass);
             level.AddPath(paths);
             level.AddBackground(background);
+            level.SetPlayer(player);
 
         }
 
@@ -167,19 +182,35 @@ namespace TowerDefense
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if(waveManager.Finished) {
-                Exit();
+                level.GameState = State.FINISHED;
+           //     Exit();
             }
-            waveManager.Update(gameTime);
-            player.Update(gameTime, waveManager.Enemies);
-            cannonButton.Update(gameTime);
-            spikeButton.Update(gameTime);
-            slowButton.Update(gameTime);
-            laserButton.Update(gameTime);
-            playButton.Update(gameTime);
-            upgradeButton.Update(gameTime);
-            sellButton.Update(gameTime);
-            upgradeManager.Update(gameTime);
-            base.Update(gameTime);
+            if(level.GameState == State.FINISHED && !saved) {
+                score.GetData();
+                bestScore.addScore(score);
+            }
+
+            if(Keyboard.GetState().IsKeyDown(Keys.P)) {
+                if(level.GameState == State.PLAYING) {
+                    level.GameState = State.PAUSED;
+                    level.SetPlayingTime();
+                }
+                else
+                    level.GameState = State.PLAYING;
+            }
+            if(level.GameState == State.PLAYING) {
+                waveManager.Update(gameTime);
+                player.Update(gameTime, waveManager.Enemies);
+                cannonButton.Update(gameTime);
+                spikeButton.Update(gameTime);
+                slowButton.Update(gameTime);
+                laserButton.Update(gameTime);
+                playButton.Update(gameTime);
+                upgradeButton.Update(gameTime);
+                sellButton.Update(gameTime);
+                upgradeManager.Update(gameTime);
+                base.Update(gameTime);
+            }
         }
 
         /// <summary>
@@ -192,7 +223,7 @@ namespace TowerDefense
             spriteBatch.Begin();
             level.Draw(spriteBatch);
             waveManager.Draw(spriteBatch);
-            player.Draw(spriteBatch);
+            
             toolbar.Draw(spriteBatch, player);
             cannonButton.Draw(spriteBatch);
             spikeButton.Draw(spriteBatch);
@@ -201,6 +232,7 @@ namespace TowerDefense
             playButton.Draw(spriteBatch);
             upgradeButton.Draw(spriteBatch);
             sellButton.Draw(spriteBatch);
+            player.Draw(spriteBatch);
             player.DrawPreview(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);

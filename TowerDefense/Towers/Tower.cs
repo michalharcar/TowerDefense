@@ -110,6 +110,9 @@ namespace TowerDefense.Towers
                     if(player.Money >= 150) {
                         damage = Damage * 2;
                         radius = Radius * 2;
+                        if(this is SlowTower) {
+                            ((SlowTower) this).ModifierDuration = ((SlowTower) this).ModifierDuration * 2;
+                        }
                         player.Money -= 150;
                         UpgradeLevel++;
                     }
@@ -118,6 +121,9 @@ namespace TowerDefense.Towers
                     if(player.Money >= 300) {
                         damage = Damage * 2;
                         radius = Radius * 2;
+                        if(this is SlowTower) {
+                            ((SlowTower) this).ModifierDuration = ((SlowTower) this).ModifierDuration * 2;
+                        }
                         player.Money -= 300;
                         UpgradeLevel++;
                     }

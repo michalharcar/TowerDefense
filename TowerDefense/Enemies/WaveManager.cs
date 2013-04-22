@@ -5,9 +5,8 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using TowerDefense.Enemies;
 
-namespace TowerDefense
+namespace TowerDefense.Enemies
 {
     class WaveManager{
         private int numberOfWaves; // How many waves the game will have
@@ -28,9 +27,10 @@ namespace TowerDefense
             get { return CurrentWave.RoundNumber + 1; }
         }
 
-        public WaveManager(Player player, Level level, int numberOfWaves, Texture2D[] enemyTextures, Texture2D healthTexture)
+        public WaveManager(Player player, Level level, int levelNumber, Texture2D[] enemyTextures, Texture2D healthTexture)
         {
-            this.numberOfWaves = numberOfWaves;
+            this.numberOfWaves = 1;
+           // levelNumber * 5;
             this.enemyTextures = enemyTextures;
             this.level = level;
             Finished = false;
