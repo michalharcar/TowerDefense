@@ -188,6 +188,7 @@ namespace TowerDefense
             if(level.GameState == State.FINISHED && !saved) {
                 score.GetData();
                 bestScore.addScore(score);
+                saved = true;
             }
 
             if(Keyboard.GetState().IsKeyDown(Keys.P)) {

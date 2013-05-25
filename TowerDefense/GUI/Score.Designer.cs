@@ -33,9 +33,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(25, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(233, 13);
+            this.label1.Size = new System.Drawing.Size(238, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Name  |  Level  |  Time  Towers  |  Money_Spent";
+            this.label1.Text = "Name  |  Level  |  Time  |  Towers  |  Money Spent";
             // 
             // textBox1
             // 
@@ -45,7 +45,7 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(252, 191);
+            this.textBox1.Size = new System.Drawing.Size(254, 191);
             this.textBox1.TabIndex = 1;
             // 
             // button1
@@ -63,7 +63,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Gray;
-            this.ClientSize = new System.Drawing.Size(276, 262);
+            this.ClientSize = new System.Drawing.Size(278, 262);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);

@@ -114,6 +114,7 @@ namespace TowerDefense.Towers
                             ((SlowTower) this).ModifierDuration = ((SlowTower) this).ModifierDuration * 2;
                         }
                         player.Money -= 150;
+                        player.MoneySpent += 150;
                         UpgradeLevel++;
                     }
                     break;
@@ -125,6 +126,7 @@ namespace TowerDefense.Towers
                             ((SlowTower) this).ModifierDuration = ((SlowTower) this).ModifierDuration * 2;
                         }
                         player.Money -= 300;
+                        player.MoneySpent += 300;
                         UpgradeLevel++;
                     }
                     break;
