@@ -23,11 +23,14 @@ namespace TowerDefense {
             sql.Open();
             SqlCommand com = new SqlCommand(QUERY_SELECT);
             com.Connection = sql;
-            SqlDataReader reader = com.ExecuteReader(System.Data.CommandBehavior.CloseConnection);
+            SqlDataReader reader = com.ExecuteReader(System.Data.CommandBehavior.Default);
             bestScore.Clear();
-            Score score = new Score();
+            
             while(reader.Read()) {
+                Score score = new Score();
                 score.LoadData(reader.GetString(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
+                bestScore.Add(score);
+           //     reader.NextResult();
             }
                 reader.Close();
                 sql.Close();
@@ -45,9 +48,7 @@ namespace TowerDefense {
                 com.Parameters.Add(new SqlParameter("@time", score.PlayingTime));
                 com.Parameters.Add(new SqlParameter("@towers", score.TowersCreated));
                 com.Parameters.Add(new SqlParameter("@money", score.MoneySpent));
-                using(SqlDataReader reader = com.ExecuteReader()) {
-                    com.ExecuteNonQuery();
-                }
+                com.ExecuteNonQuery();
             sql.Close();
         
         }
@@ -57,7 +58,7 @@ namespace TowerDefense {
             StringBuilder sb = new StringBuilder();
             int i =1;
             foreach(Score sc in bestScore){
-                sb.AppendFormat("{0}. {1}      {2}      {3}      {4}€{5}", i, sc.Name, sc.PlayingTime, sc.TowersCreated, sc.MoneySpent, Environment.NewLine);
+                sb.AppendFormat("{0}. {1}       {2}           {3}           {4}                 {5}{6}", i, sc.Name, sc.LevelNumber, sc.PlayingTime, sc.TowersCreated, sc.MoneySpent, Environment.NewLine);
                 i++;
             }
             return sb.ToString();
@@ -103,7 +104,9 @@ namespace TowerDefense {
 
 
             public int Compare(Score x, Score y) {
+                if (x.LevelNumber==y.LevelNumber)
                 return x.PlayingTime - y.PlayingTime;
+                return x.LevelNumber - y.LevelNumber;
             }
         }
     }

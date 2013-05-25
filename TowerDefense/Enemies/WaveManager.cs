@@ -29,8 +29,7 @@ namespace TowerDefense.Enemies
 
         public WaveManager(Player player, Level level, int levelNumber, Texture2D[] enemyTextures, Texture2D healthTexture)
         {
-            this.numberOfWaves = 1;
-           // levelNumber * 5;
+            this.numberOfWaves = 1; // levelNumber * 5;
             this.enemyTextures = enemyTextures;
             this.level = level;
             Finished = false;
