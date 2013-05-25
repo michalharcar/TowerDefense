@@ -12,7 +12,7 @@ namespace TowerDefense.Enemies
         private int numOfEnemies; // Number of enemies to spawn
         private int waveNumber; // What wave is this?
         private float spawnTimer = 0; // When should we spawn an enemy
-        private int enemiesSpawned = 0; // How mant enemies have spawned
+        private int enemiesSpawned = 0; // How many enemies have spawned
         private bool enemyAtEnd; // Has an enemy reached the end of the path?
         private bool spawningEnemies; // Are we still spawing enemies?
         private Level level; // A reference of the level
