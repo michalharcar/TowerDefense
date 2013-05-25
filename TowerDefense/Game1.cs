@@ -51,22 +51,11 @@ namespace TowerDefense
             saved = false;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+  
         protected override void Initialize() {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent() {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -87,7 +76,7 @@ namespace TowerDefense
                 Content.Load<Texture2D>("enemymove"),
                 Content.Load<Texture2D>("birdmove"),
                 Content.Load<Texture2D>("bossmove"),
-        };
+            };
             Texture2D[] towerTextures = new Texture2D[] {
               Content.Load<Texture2D>("cannonTower"),
               Content.Load<Texture2D>("spikeTower"),
@@ -109,43 +98,43 @@ namespace TowerDefense
             Texture2D cannonButtonNormal = Content.Load<Texture2D>("interface\\cannon_button1");
             Texture2D cannonButtonHover = Content.Load<Texture2D>("interface\\cannon_button2");
             Texture2D cannonButtonPressed = Content.Load<Texture2D>("interface\\cannon_button3");
-            cannonButton = new Button(cannonButtonNormal, cannonButtonHover, cannonButtonPressed, new Vector2(0, level.Height * 32), player);
+            cannonButton = new Button(cannonButtonNormal, cannonButtonHover, cannonButtonPressed, new Vector2(0, level.Height * 32));
             cannonButton.Clicked += new EventHandler(cannonButton_Clicked);
             
             Texture2D spikeNormal = Content.Load<Texture2D>("interface\\spike_button1");
             Texture2D spikeHover = Content.Load<Texture2D>("interface\\spike_button2");
             Texture2D spikePressed = Content.Load<Texture2D>("interface\\spike_button3");
-            spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.Height * 32), player);
+            spikeButton = new Button(spikeNormal, spikeHover, spikePressed, new Vector2(32, level.Height * 32));
             spikeButton.Clicked += new EventHandler(spikeButton_Clicked);
 
             Texture2D slowNormal = Content.Load<Texture2D>("interface\\slow_button1");
             Texture2D slowHover = Content.Load<Texture2D>("interface\\slow_button2");
             Texture2D slowPressed = Content.Load<Texture2D>("interface\\slow_button3");
-            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.Height * 32), player);
+            slowButton = new Button(slowNormal, slowHover, slowPressed, new Vector2(64, level.Height * 32));
             slowButton.Clicked += new EventHandler(slowButton_Clicked);
 
             Texture2D laserButtonNormal = Content.Load<Texture2D>("interface\\laser_button1");
             Texture2D laserButtonHover = Content.Load<Texture2D>("interface\\laser_button2");
             Texture2D laserButtonPressed = Content.Load<Texture2D>("interface\\laser_button3");
-            laserButton = new Button(laserButtonNormal, laserButtonHover, laserButtonPressed, new Vector2(96, level.Height * 32), player);
+            laserButton = new Button(laserButtonNormal, laserButtonHover, laserButtonPressed, new Vector2(96, level.Height * 32));
             laserButton.Clicked += new EventHandler(laserButton_Clicked);
 
             Texture2D playButtonNormal = Content.Load<Texture2D>("interface\\play_button1");
             Texture2D playButtonHover = Content.Load<Texture2D>("interface\\play_button2");
             Texture2D playButtonPressed = Content.Load<Texture2D>("interface\\play_button3");
-            playButton = new Button(playButtonNormal, playButtonHover, playButtonPressed, new Vector2((level.Width/2)*32-32, level.Height * 32), player);
+            playButton = new Button(playButtonNormal, playButtonHover, playButtonPressed, new Vector2((level.Width/2)*32-32, level.Height * 32));
             playButton.Clicked += new EventHandler(playButton_Clicked);
 
             Texture2D upgradeButtonNormal = Content.Load<Texture2D>("interface\\upgrade_button1");
             Texture2D upgradeButtonHover = Content.Load<Texture2D>("interface\\upgrade_button2");
             Texture2D upgradeButtonPressed = Content.Load<Texture2D>("interface\\upgrade_button3");
-            upgradeButton = new Button(upgradeButtonNormal, upgradeButtonHover, upgradeButtonPressed, new Vector2((level.Width - 1) * 32, level.Height * 32 + 64), player);
+            upgradeButton = new Button(upgradeButtonNormal, upgradeButtonHover, upgradeButtonPressed, new Vector2((level.Width - 1) * 32, level.Height * 32 + 64));
             upgradeButton.Clicked += new EventHandler(upgradeButton_Clicked);
 
             Texture2D sellButtonNormal = Content.Load<Texture2D>("interface\\sell_button1");
             Texture2D sellButtonHover = Content.Load<Texture2D>("interface\\sell_button2");
             Texture2D sellButtonPressed = Content.Load<Texture2D>("interface\\sell_button3");
-            sellButton = new Button(sellButtonNormal, sellButtonHover, sellButtonPressed, new Vector2((level.Width - 3) * 32, level.Height * 32 + 64), player);
+            sellButton = new Button(sellButtonNormal, sellButtonHover, sellButtonPressed, new Vector2((level.Width - 3) * 32, level.Height * 32 + 64));
             sellButton.Clicked += new EventHandler(sellButton_Clicked);
 
             cannonButton.OnPress += new EventHandler(cannonButton_OnPress);
@@ -158,39 +147,30 @@ namespace TowerDefense
             waveManager = new WaveManager(player, level, lvlNumber, enemyTextures, healthTexture);
             upgradeManager = new UpgradeManager(level, player, toolbar, upgradeButton, sellButton);
             score = new BestScore.Score(level, player);
-            level.AddTexture(grass);
+   //       level.AddTexture(grass);
             level.AddPath(paths);
             level.AddBackground(background);
-            level.SetPlayer(player);
 
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
+       
         protected override void UnloadContent() {
-            
+        
         }
 
-        /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime) {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             if(waveManager.Finished) {
                 level.GameState = State.FINISHED;
-           //     Exit();
             }
             if(level.GameState == State.FINISHED && !saved) {
                 score.GetData();
                 bestScore.addScore(score);
                 saved = true;
             }
-
             if(Keyboard.GetState().IsKeyDown(Keys.P)) {
                 if(level.GameState == State.PLAYING) {
                     level.GameState = State.PAUSED;
@@ -214,17 +194,12 @@ namespace TowerDefense
             }
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-      
+            GraphicsDevice.Clear(Color.CornflowerBlue);     
             spriteBatch.Begin();
             level.Draw(spriteBatch);
-            waveManager.Draw(spriteBatch);
-            
+            waveManager.Draw(spriteBatch);          
             toolbar.Draw(spriteBatch, player);
             cannonButton.Draw(spriteBatch);
             spikeButton.Draw(spriteBatch);
@@ -274,8 +249,7 @@ namespace TowerDefense
                 upgradeManager.SelectedTower.Sell(player);
                 upgradeManager.SelectedTower = null;
                 toolbar.Upgrading = false;
-            }
-            
+            }     
         }
 
         private void cannonButton_OnPress(object sender, EventArgs e) {

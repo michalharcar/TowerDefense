@@ -22,7 +22,6 @@ namespace TowerDefense {
         public int[,] Map { get { return map; } }
         private string level;
         public int LvlNumber { get; private set; }
-        private Player player;
         public State GameState { get; set; }
         private List<Texture2D> tileTextures = new List<Texture2D>();
         private Texture2D[] backgrounds;
@@ -52,9 +51,10 @@ namespace TowerDefense {
             makePath();
         }
 
-        public void AddTexture(Texture2D texture) {
-            tileTextures.Add(texture);
-        }
+        //public void AddTexture(Texture2D texture) {
+        //    tileTextures.Add(texture);
+        //}
+
         public void AddBackground(Texture2D[] textures) {
             this.backgrounds = textures;
         }
@@ -64,10 +64,6 @@ namespace TowerDefense {
 
         public void SetPlayingTime(){
             playingTime = (int) (DateTime.Now.Ticks / TimeSpan.TicksPerSecond) - startTime;
-        }
-
-        public void SetPlayer(Player player) {
-            this.player = player;
         }
 
         public void Draw(SpriteBatch batch) {
@@ -90,14 +86,15 @@ namespace TowerDefense {
                     break;
             }
                     batch.Draw(bgtexture, new Rectangle(0, 0, 512, 512), Color.White);
+                    
+            Texture2D texture;
             for(int col = 0; col < Width; col++) {
                 for(int row = 0; row < Height; row++) {
                     int textureIndex = map[row, col];
                     //if(textureIndex == -1)
                     //    continue;
                     //Texture2D texture = tileTextures[textureIndex];
-                    if(textureIndex == 1) {
-                        Texture2D texture;
+                    if(textureIndex == 1) {                       
                         switch(level) {
                             case "level1":
                                 texture = paths[0];
@@ -120,13 +117,15 @@ namespace TowerDefense {
 
         public int GetIndex(int cellX, int cellY) {
             if(cellX < 0 || cellX > Width - 1 || cellY < 0 || cellY > Height - 1)
-                return 0;
+                return -1;
             else
                 return map[cellY, cellX];
         }
 
         public static int[,] loadLevel(string level) {
             string path = "Content\\" + level + ".txt";
+
+            // creating 2-dimensional array of integers
             using(StreamReader sr = new StreamReader(path)) {
                 int linesCount = 0;
                 string line;
@@ -136,6 +135,8 @@ namespace TowerDefense {
                     lineLength = line.Length;
                 }
                 int[,] mapa = new int[linesCount, lineLength / 2 + 1];
+
+                // filling array with 0(grass) and 1(path)
                 sr.BaseStream.Seek(0, SeekOrigin.Begin);
                 int x = 0;
                 string row;

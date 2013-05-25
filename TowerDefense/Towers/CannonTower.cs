@@ -11,15 +11,15 @@ namespace TowerDefense.Towers
     public class CannonTower : Tower {
 
         public CannonTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position){
-            this.damage = 15; // Set the damage
-            this.cost = 15;   // Set the initial cost
-            this.radius = 80; // Set the radius
+            this.damage = 15; 
+            this.cost = 15;   
+            this.radius = 80; 
             this.name = "CannonTower";
         }
 
         public override void Update(GameTime gameTime) {
             base.Update(gameTime);
-            if (bulletTimer >= 0.75f && target != null) {
+            if (bulletTimer >= 0.5f && target != null) {
                 Bullet bullet = new Bullet(bulletTexture, Vector2.Subtract(center, new Vector2(bulletTexture.Width / 2)), rotation, 6, damage);
                 bulletList.Add(bullet);
                 bulletTimer = 0;
@@ -34,7 +34,7 @@ namespace TowerDefense.Towers
                     target.CurrentHealth -= bullet.Damage;
                     bullet.Kill();
                 }
-                if (bullet.IsDead()) {
+                if (!bullet.IsActive()) {
                     bulletList.Remove(bullet);
                     i--;
                 }

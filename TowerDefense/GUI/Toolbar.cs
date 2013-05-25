@@ -64,7 +64,6 @@ namespace TowerDefense.GUI
                 towerText = string.Format("");
                 towerText3 = string.Format("");
                 if(tower is SlowTower) {
-                    spriteBatch.DrawString(font, "SlowTower:", towerTextPos, Color.Blue);
                     switch(tower.UpgradeLevel) {
                         case 1:
                             towerText = string.Format("lvl 1(lvl 2)  Radius: {0}({1})  Slowmo duration: {2}({3})", tower.Radius, tower.Radius * 2, ((SlowTower) tower).ModifierDuration, ((SlowTower) tower).ModifierDuration * 2);

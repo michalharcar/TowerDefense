@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TowerDefense.Enemies;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,15 +12,13 @@ namespace TowerDefense.Towers
     public class SlowTower : Tower {
         // Defines how fast an enemy will move when hit.
         private float speedModifier;
-     //   public float SpeedModifier { get { return speedModifier; } set { speedModifier = value; } }
-        // Defines how long this effect will last.
         private float modifierDuration;
         public float ModifierDuration { get { return modifierDuration; } set { modifierDuration = value; } }
 
         public SlowTower(Texture2D texture, Texture2D bulletTexture, Vector2 position) : base(texture, bulletTexture, position)  {
-            this.damage = 0; // Set the damage
-            this.cost = 15;   // Set the initial cost
-            this.radius = 80; // Set the radius
+            this.damage = 0; 
+            this.cost = 15;   
+            this.radius = 80; 
             this.name = "SlowTower";
             this.speedModifier = 0.4f;
             this.modifierDuration = 2.0f;
@@ -48,11 +47,16 @@ namespace TowerDefense.Towers
                     target.CurrentHealth -= bullet.Damage;
                     bullet.Kill();
                 }
-                if (bullet.IsDead()) {
+                if (!bullet.IsActive()) {
                     bulletList.Remove(bullet);
                     i--;
                 }
             }
+        }
+
+        public override void GetClosestEnemy(List<Enemy> enemies) {
+            target = null;
+            base.GetClosestEnemy(enemies);
         }
     }
 }

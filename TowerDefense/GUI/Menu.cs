@@ -9,36 +9,35 @@ using System.Windows.Forms;
 
 namespace TowerDefense.GUI {
     public partial class Menu : Form {
-        static int level = 1;
+        int level = 1;
         
         public Menu() {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private void newGameButton_Click(object sender, EventArgs e) {
             this.SetVisibleCore(false);
             new Game1(level).Run();
-            this.SetVisibleCore(true);
-            
+            this.SetVisibleCore(true);        
         }
 
-        private void button3_Click(object sender, EventArgs e) {
-            this.Dispose();
-        }
-
-        private void button4_Click(object sender, EventArgs e) {
-            Form form = new Levels();
+        private void levelsButton_Click(object sender, EventArgs e) {
+            Form form = new Levels(this);
             form.ShowDialog();
         }
 
-        public static void setLevel(int lvl) {
-            level = lvl;
-        }
-
-        private void button2_Click(object sender, EventArgs e) {
+        private void scoreButton_Click(object sender, EventArgs e) {
             Form form = new Score();
             form.ShowDialog();
         }
+
+        private void exitButton_Click(object sender, EventArgs e) {
+            this.Dispose();
+        }     
+
+        public void setLevel(int lvl) {
+            level = lvl;
+        }      
         
     }
 }

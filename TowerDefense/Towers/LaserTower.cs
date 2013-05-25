@@ -8,14 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TowerDefense.Towers {
     public class LaserTower : Tower {
-    //    private Texture2D laserTexture;
 
         public LaserTower(Texture2D texture, Texture2D laserTexture, Vector2 position) : base(texture, laserTexture, position) {
             this.damage = 1;
             this.cost = 50;   
             this.radius = 50;
             this.name = "LaserTower";
-            base.laserTexture = laserTexture;
+            this.laserTexture = laserTexture;
         }
 
         public override void Update(GameTime gameTime) {
@@ -40,6 +39,12 @@ namespace TowerDefense.Towers {
                     i--;
                 }
             }
+        }
+
+        protected override void FaceTarget() {
+            Vector2 direction = Top - target.Center;
+            direction.Normalize();
+            laserRotation = (float) Math.Atan2(-direction.X, direction.Y) - (float) Math.PI / 2;
         }
         
     }

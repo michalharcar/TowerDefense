@@ -30,7 +30,6 @@ namespace TowerDefense {
                 Score score = new Score();
                 score.LoadData(reader.GetString(0), reader.GetInt32(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetInt32(4));
                 bestScore.Add(score);
-           //     reader.NextResult();
             }
                 reader.Close();
                 sql.Close();

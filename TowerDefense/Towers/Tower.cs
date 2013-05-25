@@ -76,28 +76,22 @@ namespace TowerDefense.Towers
         }
 
         public virtual void GetClosestEnemy(List<Enemy> enemies)  {
-            target = null;
-            float smallestRange = radius;
-            foreach (Enemy enemy in enemies) {
-                if (Vector2.Distance(center, enemy.Center) < smallestRange) {
-                    smallestRange = Vector2.Distance(center, enemy.Center);
-                    target = enemy;
+         // target = null;
+            if(!HasTarget) {
+                float smallestRange = radius;
+                foreach(Enemy enemy in enemies) {
+                    if(Vector2.Distance(center, enemy.Center) < smallestRange) {
+                        smallestRange = Vector2.Distance(center, enemy.Center);
+                        target = enemy;
+                    }
                 }
             }
         }
 
-        protected void FaceTarget()  {
-                 if(!(this is LaserTower)) {
-                     Vector2 direction = center - target.Center;
-                     direction.Normalize();
-                     rotation = (float) Math.Atan2(-direction.X, direction.Y);
-                 }
-                 else {
-                     Vector2 direction = Top - target.Center;
-                     direction.Normalize();
-                     laserRotation = (float) Math.Atan2(-direction.X, direction.Y) - (float) Math.PI / 2;
-
-                 }
+        protected virtual void FaceTarget()  {
+              Vector2 direction = center - target.Center;
+              direction.Normalize();
+              rotation = (float) Math.Atan2(-direction.X, direction.Y);  
             }
 
         public string getName(){

@@ -23,19 +23,15 @@ namespace TowerDefense.GUI
        private Texture2D pressedTexture;
        // A rectangle that covers the button.
        private Rectangle bounds;
-       // Store the current state of the button.
        private ButtonStatus state = ButtonStatus.Normal;
-       // Gets fired when the button is pressed.
-       public event EventHandler Clicked;
-       // Gets fired when the button is held down.
-       public event EventHandler OnPress;
-       private Player player;
 
-       public Button(Texture2D texture, Texture2D hoverTexture, Texture2D pressedTexture, Vector2 position, Player player) : base(texture, position) {
+       public event EventHandler Clicked;
+       public event EventHandler OnPress;
+
+       public Button(Texture2D texture, Texture2D hoverTexture, Texture2D pressedTexture, Vector2 position) : base(texture, position) {
            this.hoverTexture = hoverTexture;
            this.pressedTexture = pressedTexture;
            this.bounds = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
-           this.player = player;
        }
 
        public override void Update(GameTime gameTime) {
@@ -49,23 +45,21 @@ namespace TowerDefense.GUI
            else if (isMouseOver == false && state != ButtonStatus.Pressed)  {
                state = ButtonStatus.Normal;
            }
+
+           // Check if the left button was pressed.
            if (mouseState.LeftButton == ButtonState.Pressed && previousState.LeftButton == ButtonState.Released) {
                if (isMouseOver == true) {
-                   // Update the button state.
                    state = ButtonStatus.Pressed;
-                   if (OnPress != null) {
-                       // Fire the OnPress event.
+                   if(OnPress != null) {
                        OnPress(this, EventArgs.Empty);
                    }
                }
            }
-           // Check if the player releases the button.
+           // Check if the left button was released.
            if (mouseState.LeftButton == ButtonState.Released && previousState.LeftButton == ButtonState.Pressed)  {
                if (isMouseOver == true) {
-                   // update the button state.
                    state = ButtonStatus.MouseOver;
-                   if (Clicked != null)  {
-                       // Fire the clicked event.
+                   if(Clicked != null) {
                        Clicked(this, EventArgs.Empty);
                    }
                }

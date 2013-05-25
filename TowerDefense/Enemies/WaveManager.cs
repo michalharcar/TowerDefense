@@ -9,29 +9,24 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TowerDefense.Enemies
 {
     class WaveManager{
-        private int numberOfWaves; // How many waves the game will have
-      //  private float timeSinceLastWave; // How long since the last wave ended
+        private int numberOfWaves;
+    //  private float timeSinceLastWave; 
         private Queue<Wave> waves = new Queue<Wave>(); // A queue of all our waves
-        private Texture2D[] enemyTextures; // The texture used to draw the enemies
-    //    private bool waveFinished = false; // Is the current wave over?
-        private Level level; // A reference to our level class
+        private Texture2D[] enemyTextures; 
+    //  private bool waveFinished = false; // Is the current wave over?
         public bool Finished { get; private set; }
 
         public Wave CurrentWave {    // Get the wave at the front of the queue
             get { return waves.Peek(); }
         }
-        public List<Enemy> Enemies { // Get a list of the current enemeies
+        public List<Enemy> Enemies {
             get { return CurrentWave.Enemies; }
-        }
-        public int Round  {  // Returns the wave number
-            get { return CurrentWave.RoundNumber + 1; }
         }
 
         public WaveManager(Player player, Level level, int levelNumber, Texture2D[] enemyTextures, Texture2D healthTexture)
         {
-            this.numberOfWaves = 1; // levelNumber * 5;
+            this.numberOfWaves = levelNumber * 5;
             this.enemyTextures = enemyTextures;
-            this.level = level;
             Finished = false;
             for (int i = 1; i <= numberOfWaves; i++)  {
                 int NumberOfEnemies = 3 + 3*i;
@@ -66,8 +61,8 @@ namespace TowerDefense.Enemies
         }
 
         public void StartNextWave() {
-            if(waves.Count > 0) { // If there are still waves left
-                waves.Peek().Start(); // Start the next one
+            if(waves.Count > 0) {
+                waves.Peek().Start(); 
        //         timeSinceLastWave = 0; // Reset timer
       //          waveFinished = false;
             }

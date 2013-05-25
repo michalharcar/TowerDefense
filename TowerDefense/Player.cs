@@ -26,12 +26,11 @@ namespace TowerDefense
         private Texture2D[] bulletTextures;
         private Texture2D laserTexture;
         private string newTowerType;
-        public bool EnoughGold { get; set; }
-        public string NewTowerType { set { newTowerType = value; }  }
-        // The index of the new towers texture.
-        public int NewTowerIndex { get; set; }
+        public string NewTowerType { set { newTowerType = value; } }
+        public int NewTowerIndex { get; set; }  // The index of the new towers texture.
         private Tower towerToAdd;
         public Tower TowerToAdd { get { return towerToAdd; } }
+        public bool EnoughGold { get; set; }      
         public int TowersCreated { get; private set; }
         public int MoneySpent { get; set; }
 
@@ -62,21 +61,15 @@ namespace TowerDefense
                 }
             }
             if(mouseState.RightButton == ButtonState.Released && oldState.RightButton == ButtonState.Pressed) {
-                if(TowerToAdd!=null) {
+                  if(TowerToAdd!=null) {  
                     towerToAdd = null;
                     newTowerType = string.Empty;
                 }
             }
 
             foreach(Tower tower in towers) {
-                if(tower is SlowTower)
-                    tower.GetClosestEnemy(enemies);
-                else {
-                    if(tower.HasTarget == false)
-                        tower.GetClosestEnemy(enemies);
-                }
+                tower.GetClosestEnemy(enemies);
                 tower.Update(gameTime);
-
             }
             oldState = mouseState; // Set the oldState so it becomes the state of the previous frame.
         }
@@ -142,7 +135,6 @@ namespace TowerDefense
             }
             else {
                   newTowerType = string.Empty;
-             //   towerToAdd = null;
             }
         }
 

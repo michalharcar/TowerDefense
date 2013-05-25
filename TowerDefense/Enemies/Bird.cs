@@ -11,8 +11,8 @@ namespace TowerDefense.Enemies {
 
          public Bird(Texture2D texture, Vector2 position) : base(texture, position) {
             startHealth = 50;
-            currentHealth = startHealth;
-            bountyGiven = 3;
+            CurrentHealth = startHealth;
+            GoldGiven = 3;
             speed = 0.8f;
         }
     }

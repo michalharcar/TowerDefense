@@ -40,7 +40,7 @@ namespace TowerDefense
         }
 
         public virtual void Update(GameTime gameTime) {
-         //   this.center = new Vector2(position.X + texture.Width / 2,position.Y + texture.Height / 2);
+       //   this.center = new Vector2(position.X + texture.Width / 2,position.Y + texture.Height / 2);
             this.center = new Vector2(position.X + 16, position.Y + 16);
 
         }
@@ -49,16 +49,14 @@ namespace TowerDefense
             spriteBatch.Draw(texture, center, null, Color.White,rotation, origin, 1.0f, SpriteEffects.None, 0);
         }
 
+        // for animated enemies
         public virtual void Draw(SpriteBatch spriteBatch, Rectangle rectangle) {
             spriteBatch.Draw(texture, center, rectangle, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 0);
         }
 
+        // for laser
         public virtual void Draw(SpriteBatch spriteBatch, Rectangle rectangle, float laserRotation, Vector2 origin) {
             spriteBatch.Draw(texture, position, rectangle, Color.White, laserRotation, origin, 1.0f, SpriteEffects.None, 0);
-        }
-
-        public virtual void Draw(SpriteBatch spriteBatch, Color color) {
-            spriteBatch.Draw(texture, center, null, color, rotation, origin, 1.0f, SpriteEffects.None, 0);
         }
 
     }

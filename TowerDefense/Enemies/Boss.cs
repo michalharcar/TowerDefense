@@ -11,8 +11,8 @@ namespace TowerDefense.Enemies {
 
         public Boss(Texture2D texture, Vector2 position) : base(texture, position) {
             startHealth = 1000;
-            currentHealth = startHealth;
-            bountyGiven = 150;
+            CurrentHealth = startHealth;
+            GoldGiven = 150;
             speed = 0.4f;
         }
     }

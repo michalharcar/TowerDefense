@@ -30,11 +30,6 @@ namespace TowerDefense.Towers {
             this.bounds2 = new Rectangle((int) sellButton.Position.X, (int) sellButton.Position.Y, 32, 32);
         }
 
-        public void upgradeTower(Tower tower) {
-            if(tower.UpgradeLevel < 3)
-                tower.UpgradeLevel++;
-        }
-
         public void Update(GameTime gameTime) {
             MouseState mouseState = Mouse.GetState();
             int mouseX =mouseState.X/32;

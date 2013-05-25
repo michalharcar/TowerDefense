@@ -9,27 +9,30 @@ using System.Windows.Forms;
 
 namespace TowerDefense.GUI {
     public partial class Levels : Form {
-        public Levels() {
+        private Menu menu;
+
+        public Levels(Menu menu) {
             InitializeComponent();
+            this.menu = menu;
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel(1);
+            menu.setLevel(1);
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel(2);
+            menu.setLevel(2);
         }
 
         private void radioButton3_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel(3);
+            menu.setLevel(3);
         }
 
         private void radioButton4_CheckedChanged(object sender, EventArgs e) {
-            GUI.Menu.setLevel(4);
+            menu.setLevel(4);
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private void backButton_Click(object sender, EventArgs e) {
             this.Dispose();
         }
 
