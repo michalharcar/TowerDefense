@@ -33,7 +33,7 @@ namespace TowerDefense
         private Tower towerToAdd;
         public Tower TowerToAdd { get { return towerToAdd; } }
         public int TowersCreated { get; private set; }
-        public int MoneySpent { get; set; }
+        public int MoneySpent { get; private set; }
 
 
         public Player(Level level, Texture2D[] towerTextures, Texture2D[] bulletTextures, Texture2D laserTexture) {
