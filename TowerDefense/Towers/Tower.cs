@@ -11,8 +11,8 @@ using TowerDefense.Enemies;
 namespace TowerDefense.Towers
 {
     public class Tower : Sprite {
-        protected int cost; // How much will the tower cost to make
-        protected int damage; // The damage done to enemy's
+        protected int cost; 
+        protected int damage; 
         protected float radius; // How far the tower can shoot
         protected Enemy target;
         protected string name;
@@ -22,24 +22,14 @@ namespace TowerDefense.Towers
         protected List<Bullet> bulletList = new List<Bullet>();
         protected List<Laser> laserList = new List<Laser>();
         protected bool laserOn;
-        public int UpgradeLevel { get; set; }
 
-        public virtual bool HasTarget {
-            // Check if the tower has a target.
-            get { return target != null; }
-        }
-        public Enemy Target {
-            get { return target; }
-        }
-        public int Cost {
-            get { return cost; }
-        }
-        public int Damage  {
-            get { return damage; }
-        }
-        public float Radius  {
-            get { return radius; }
-        }
+        public int UpgradeLevel { get; set; }
+        public virtual bool HasTarget { get { return target != null; } }
+        public Enemy Target {  get { return target; } }
+
+        public int Cost { get { return cost; } }
+        public int Damage  { get { return damage; } }
+        public float Radius  {  get { return radius; } }
 
         public Tower(Texture2D texture, Vector2 position) : base(texture, position) {
             UpgradeLevel = 1;
@@ -76,7 +66,6 @@ namespace TowerDefense.Towers
         }
 
         public virtual void GetClosestEnemy(List<Enemy> enemies)  {
-         // target = null;
             if(!HasTarget) {
                 float smallestRange = radius;
                 foreach(Enemy enemy in enemies) {
@@ -98,15 +87,12 @@ namespace TowerDefense.Towers
             return name;
         }
 
-        public void Upgrade(Player player) {
+        public virtual void Upgrade(Player player) {
             switch(UpgradeLevel) {
                 case 1:
                     if(player.Money >= 150) {
                         damage = Damage * 2;
                         radius = Radius * 2;
-                        if(this is SlowTower) {
-                            ((SlowTower) this).ModifierDuration = ((SlowTower) this).ModifierDuration * 2;
-                        }
                         player.Money -= 150;
                         player.MoneySpent += 150;
                         UpgradeLevel++;
@@ -116,9 +102,6 @@ namespace TowerDefense.Towers
                     if(player.Money >= 300) {
                         damage = Damage * 2;
                         radius = Radius * 2;
-                        if(this is SlowTower) {
-                            ((SlowTower) this).ModifierDuration = ((SlowTower) this).ModifierDuration * 2;
-                        }
                         player.Money -= 300;
                         player.MoneySpent += 300;
                         UpgradeLevel++;

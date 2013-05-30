@@ -109,6 +109,7 @@ namespace TowerDefense.GUI
                 else {
                     towerText = string.Format("Cost: {0}   Radius: {1}   Damage: {2}", player.TowerToAdd.Cost, player.TowerToAdd.Radius, player.TowerToAdd.Damage);
                 }
+                spriteBatch.DrawString(font, towerText, towerTextPos2, Color.White);
 
                 //if(player.TowerToAdd is SlowTower) {
                 //    spriteBatch.DrawString(font, "SlowTower:", towerTextPos, Color.Blue);
@@ -126,7 +127,7 @@ namespace TowerDefense.GUI
                 //    spriteBatch.DrawString(font, "LaserTower:", towerTextPos, Color.Red);
                 //    towerText = string.Format("                          Cost: {0}   Radius: {1}   Damage: {2}", player.TowerToAdd.Cost, player.TowerToAdd.Radius, player.TowerToAdd.Damage);
                 //}
-                spriteBatch.DrawString(font, towerText, towerTextPos2, Color.White);
+                
             }
                 if(!player.EnoughGold) {
                     spriteBatch.DrawString(font, "Not enough coins for this tower", towerTextPos, Color.Red);
@@ -137,7 +138,7 @@ namespace TowerDefense.GUI
                     spriteBatch.DrawString(font, finalText, finalPos, Color.Black);
                 }
 
-                    if(level.GameState == State.PAUSED) {
+                if(level.GameState == State.PAUSED) {
                 string pauseText = string.Format("Playing time: {0} seconds", level.PlayingTime);
                 spriteBatch.DrawString(font, pauseText, finalPos, Color.Black);
                 }

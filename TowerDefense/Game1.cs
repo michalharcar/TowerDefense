@@ -14,9 +14,7 @@ using TowerDefense.Enemies;
 
 namespace TowerDefense
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+
     public class Game1 : Game {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -145,7 +143,7 @@ namespace TowerDefense
             toolbar = new Toolbar(walls, topBar, gold, life, font, new Vector2(0, level.Height * 32), level);       
             player = new Player(level, towerTextures, bulletTextures, laserTexture);
             waveManager = new WaveManager(player, level, lvlNumber, enemyTextures, healthTexture);
-            upgradeManager = new UpgradeManager(level, player, toolbar, upgradeButton, sellButton);
+            upgradeManager = new UpgradeManager(player, toolbar, upgradeButton, sellButton);
             score = new BestScore.Score(level, player);
    //       level.AddTexture(grass);
             level.AddPath(paths);

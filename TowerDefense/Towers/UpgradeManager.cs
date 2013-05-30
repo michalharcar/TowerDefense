@@ -11,7 +11,6 @@ using TowerDefense.GUI;
 namespace TowerDefense.Towers {
     class UpgradeManager {
 
-        private Level level;
         private Player player;
         private Toolbar toolbar;
         private Button upgradeButton;
@@ -21,8 +20,7 @@ namespace TowerDefense.Towers {
         private MouseState previousState;
     
 
-        public UpgradeManager(Level level, Player player, Toolbar toolbar, Button upgradeButton, Button sellButton) {
-            this.level = level;
+        public UpgradeManager(Player player, Toolbar toolbar, Button upgradeButton, Button sellButton) {
             this.player = player;
             this.toolbar = toolbar;
             this.upgradeButton = upgradeButton;
@@ -32,7 +30,7 @@ namespace TowerDefense.Towers {
 
         public void Update(GameTime gameTime) {
             MouseState mouseState = Mouse.GetState();
-            int mouseX =mouseState.X/32;
+            int mouseX = mouseState.X/32;
             int mouseY = mouseState.Y/32;
             if(mouseState.LeftButton == ButtonState.Pressed) {
                 player.EnoughGold = true;

@@ -141,10 +141,6 @@ namespace TowerDefense
         public void DrawPreview(SpriteBatch spriteBatch) {
             // Draw the tower preview.
             if(string.IsNullOrEmpty(newTowerType) == false) {
-                int cellX = (int) (mouseState.X / 32); // Convert the position of the mouse
-                int cellY = (int) (mouseState.Y / 32); // from array space to level space
-                int tileX = cellX * 32; // Convert from array space to level space
-                int tileY = cellY * 32; // Convert from array space to level space
                 Texture2D previewTexture = towerTextures[NewTowerIndex];
                 if(level.GetIndex(cellX, cellY) != 1 && cellX < level.Map.GetLength(1) && cellY < level.Map.GetLength(0))
                     spriteBatch.Draw(previewTexture, new Rectangle(tileX, tileY, previewTexture.Width, previewTexture.Height), Color.White);
